@@ -20,9 +20,6 @@ Jun Lyu is currently a last-year Ph.D. student in the DevOps+ Research Laborator
 
 His research interests focus on improving software development efficiency and quality, particularly improving software build efficiency and quality in practice.
 
-<div style="display:none">
-My research interest includes neural machine translation and computer vision. I have published more than 100 papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>).
-</div>
 
 # 🔥 News
 - *2024.04*: &nbsp;🎉🎉 Our paper "Towards Efficient Build Ordering for Incremental Builds with Multiple Configurations" has been accepted by FSE 2024!
