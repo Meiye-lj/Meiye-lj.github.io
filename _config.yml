@@ -4,12 +4,12 @@
 # which you are expected to set up once and rarely need to edit after that.
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # `jekyll serve`. If you change this file, please restart the server process.
-
+github: [metadata]
 # Site Settings
-title                    : "Lorem ipsum"
-description              : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. "
-repository               : "RayeRen/acad-homepage.github.io"
-google_scholar_stats_use_cdn : true
+title                    : "Lyu Jun"
+description              : "Jun Lyu is currently a last-year Ph.D. student in the DevOps+ Research Laboratory, supervised by Prof. He (Jason) Zhang, at Nanjing University, China. Jun Lyu is studying in the Trustworthy Engineering of Software Technologies (TEST) Lab at the National University of Singapore, co-supervised by Prof. Manuel Rigger. "
+repository               : "Meiye-lj/JunLyu.github.io"
+google_scholar_stats_use_cdn : fasle
 
 # google analytics
 google_analytics_id      :  # get google_analytics_id from https://analytics.google.com/analytics/
@@ -21,14 +21,14 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 
 # Site Author
 author:
-  name             : "Lorem ipsum"
-  avatar           : "images/android-chrome-512x512.png"
-  bio              : "Lorem ipsum College"
-  location         : "Beijing, China"
+  name             : "Jun Lyu"
+  avatar           : "images/bio.jpg"
+  bio              : "Nanjing University"
+  location         : "Nanjing, China"
   employer         :
   pubmed           : 
-  googlescholar    : "https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID"
-  email            : "Lorem@ipsum.com"
+  googlescholar    : #"https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID"
+  email            : "lvjun_dnt@outlook.com"
   researchgate     :  # e.g., "https://www.researchgate.net/profile/yourprofile"
   uri              :
   bitbucket        :
