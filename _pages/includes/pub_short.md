@@ -3,4 +3,4 @@
 
 <!-- My full paper list is shown at [my personal homepage](https://rayeren.github.io). -->
 - ``FSE 2024`` Towards Efficient Build Ordering for Incremental Builds with Multiple Configurations, **Jun Lyu**, Shanshan Li, He Zhang, Lanxin Yang, Bohan Liu, Manuel Rigger.
-- ``ISSTA 2024`` [Detecting Build Dependency Errors in Incremental Builds](https://github.com/Meiye-lj/Meiye-lj.github.io/blob/6c6326815d56ba582aafbdd4a0332ffa66c8eea8/papers/Detecting_Build_Dependency_Errors_in_Incremental_Builds.pdf), **Jun Lyu**, Shanshan Li, He Zhang, Yang Zhang, guoping rong, Manuel Rigger.
+- ``ISSTA 2024`` [Detecting Build Dependency Errors in Incremental Builds](https://github.com/Meiye-lj/Meiye-lj.github.io/blob/6c6326815d56ba582aafbdd4a0332ffa66c8eea8/papers/Detecting_Build_Dependency_Errors_in_Incremental_Builds.pdf), **Jun Lyu**, Shanshan Li, He Zhang, Yang Zhang, Guoping Rong, Manuel Rigger.
