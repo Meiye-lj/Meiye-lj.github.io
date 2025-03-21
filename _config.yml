@@ -8,7 +8,7 @@
 title                    : "Lyu Jun"
 description              : "Feiyimin Building, 22 Hankou Rd."
 repository               : "Meiye-lj/Meiye-lj.github.io"
-google_scholar_stats_use_cdn : fasle
+google_scholar_stats_use_cdn : true
 
 # google analytics
 google_analytics_id      :  # get google_analytics_id from https://analytics.google.com/analytics/
@@ -26,7 +26,7 @@ author:
   location         : "Nanjing, China"
   employer         :
   pubmed           : 
-  googlescholar    : #"https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID"
+  googlescholar    : "https://scholar.google.com/citations?user=ZkRL7gIAAAAJ&hl"
   email            : "lvjun_dnt@outlook.com"
   researchgate     :  # e.g., "https://www.researchgate.net/profile/yourprofile"
   uri              :
