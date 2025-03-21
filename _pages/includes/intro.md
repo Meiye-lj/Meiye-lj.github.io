@@ -1,3 +1,2 @@
-Jun Lyu is currently a last-year Ph.D. student in the [DevOps+ Research Laboratory](http://softeng.nju.edu.cn/), supervised by [Prof. He (Jason) Zhang](https://software.nju.edu.cn//hezhang/index.html), at Nanjing University, China. Jun Lyu was studied in the [Trustworthy Engineering of Software Technologies (TEST) Lab](https://nus-test.github.io/) at the National University of Singapore, co-supervised by [Prof. Manuel Rigger](https://www.manuelrigger.at/), from 2023 to 2024.
-
-His research interests focus on improving software development efficiency and quality, particularly improving software build efficiency and quality in practice.
+Jun Lyu completed his PhD at Nanjing University, China, supervised by [Prof. He (Jason) Zhang](https://software.nju.edu.cn//hezhang/index.html).  
+His research interests include improving software development efficiency and quality, particularly improving software build efficiency and quality in practice. His recent research interests are in software testing and AI4SE.
