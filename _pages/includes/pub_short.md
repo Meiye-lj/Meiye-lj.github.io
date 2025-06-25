@@ -2,9 +2,9 @@
 # 💻 Selected Research Papers
 
 My full paper list is shown at [google scholar](https://scholar.google.com/citations?user=ZkRL7gIAAAAJ&hl).
-- ``TOSEM`` One Size Does Not Fit All: Investigating Efficacy of Perplexity in Detecting LLM-Generated Code, Jinwei, Xu; He, Zhang; Yanjing, Yang; Lanxin, Yang; Zeru, Cheng; **Jun, Lyu**; Bohan, Liu; Xin, Zhou; Alberto, Bacchelli; Yin, Chiam; Thiam Kian, Chiew
-- ``TSE`` Detecting Build Dependency Errors by Dynamic Analysis of Build Execution against Declaration, **Jun Lyu**, Shanshan Li, Bohan Liu, He Zhang, Guoping Rong, Chenxing Zhong, Xiaodong Liu
-- ``FSE 2025`` A Knowledge Enhanced Large Language Model for Bug Localization, Yue Li, Bohan Liu, Ting Zhang, Zhiqi Wang, David Lo, Lanxin Yang, **Jun Lyu**, He Zhang
+- ``TOSEM`` One Size Does Not Fit All: Investigating Efficacy of Perplexity in Detecting LLM-Generated Code, Jinwei Xu, He Zhang, Yanjing, Yang, Lanxin Yang, Zeru Cheng, Jun Lyu, Bohan Liu, Xin Zhou, Alberto Bacchelli, Yin Chiam, Thiam Kian Chiew.
+- ``TSE`` Detecting Build Dependency Errors by Dynamic Analysis of Build Execution against Declaration, **Jun Lyu**, Shanshan Li, Bohan Liu, He Zhang, Guoping Rong, Chenxing Zhong, Xiaodong Liu.
+- ``FSE 2025`` A Knowledge Enhanced Large Language Model for Bug Localization, Yue Li, Bohan Liu, Ting Zhang, Zhiqi Wang, David Lo, Lanxin Yang, **Jun Lyu**, He Zhang.
 - ``TSE`` Decision Support for Selecting Blockchain-Based Application Design Patterns with Layered Taxonomy and Quality Attributes, Yanze Wang, Yiling Huang, Jingyue Li, Shanshan Li, He Zhang, **Jun Lyu**, Chenxing Zhong, Bohan Liu, Yue Liu, and Qinghua Lu.
 - ``ASE 2024`` GPP: A Graph-Powered Prioritizer for Code Review Requests, Lanxin Yang, Jinwei Xu, He Zhang, Fanghao Wu, **Jun Lyu**, Yue Li, Alberto Bacchelli. 
 - ``ASE 2024`` An Explainable Automated Model for Measuring Software Engineer Contribution, Yue Li, He Zhang, Yuzhe Jin, Zhong Ren, Liming Dong, **Jun Lyu**, Lanxin Yang, David Lo, Dong Shao.
