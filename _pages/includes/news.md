@@ -1,4 +1,5 @@
 # 🔥 News
+- *2025.06*: &nbsp;🎉🎉 Our paper "One Size Does Not Fit All: Investigating Efficacy of Perplexity in Detecting LLM-Generated Code" was accepted by TOSEM!
 - *2025.04*: &nbsp;🎉🎉 Our paper "Detecting Build Dependency Errors by Dynamic Analysis of Build Execution against Declaration" was accepted by TSE!
 - *2025.04*: &nbsp;🎉🎉 Our paper "A Knowledge Enhanced Large Language Model for Bug Localization" was accepted by FSE 2025!
 - *2025.01*: &nbsp;🎉🎉 Our paper "Decision Support for Selecting Blockchain-Based Application Design Patterns with Layered Taxonomy and Quality Attributes" was accepted by TSE.
