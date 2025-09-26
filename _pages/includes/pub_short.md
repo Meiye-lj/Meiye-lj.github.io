@@ -2,6 +2,7 @@
 # 💻 Selected Research Papers
 
 My full paper list is shown at [google scholar](https://scholar.google.com/citations?user=ZkRL7gIAAAAJ&hl).
+- ``ASE 2025`` Automatic Fixing of Missing Dependency Errors, **Jun Lyu**, He Zhang, Lanxin Yang, Yue Li, Chenxing Zhong, Manuel Rigger.
 - ``TOSEM`` One Size Does Not Fit All: Investigating Efficacy of Perplexity in Detecting LLM-Generated Code, Jinwei Xu, He Zhang, Yanjing, Yang, Lanxin Yang, Zeru Cheng, **Jun Lyu**, Bohan Liu, Xin Zhou, Alberto Bacchelli, Yin Chiam, Thiam Kian Chiew.
 - ``TSE`` Detecting Build Dependency Errors by Dynamic Analysis of Build Execution against Declaration, **Jun Lyu**, Shanshan Li, Bohan Liu, He Zhang, Guoping Rong, Chenxing Zhong, Xiaodong Liu.
 - ``FSE 2025`` A Knowledge Enhanced Large Language Model for Bug Localization, Yue Li, Bohan Liu, Ting Zhang, Zhiqi Wang, David Lo, Lanxin Yang, **Jun Lyu**, He Zhang.
