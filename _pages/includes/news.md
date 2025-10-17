@@ -1,4 +1,5 @@
 # 🔥 News
+- *2025.10*: &nbsp;🎉🎉 Our paper "Automatic Dockerfile Generation with Large Language Models" was accepted by ICSE 2026!
 - *2025.09*: &nbsp;🎉🎉 Our paper "Automatic Fixing of Missing Dependency Errors" was accepted by ASE 2025!
 - *2025.06*: &nbsp;🎉🎉 Our paper "One Size Does Not Fit All: Investigating Efficacy of Perplexity in Detecting LLM-Generated Code" was accepted by TOSEM!
 - *2025.04*: &nbsp;🎉🎉 Our paper "Detecting Build Dependency Errors by Dynamic Analysis of Build Execution against Declaration" was accepted by TSE!
