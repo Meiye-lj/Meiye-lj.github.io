@@ -7,4 +7,4 @@ An ideal candidate may have some of the following qualities:
 * The curiosity and courage to take on challenging and impactful problems
 * Resilience in handling setbacks (which are common in research), while maintaining a healthy work–life balance
 
-If you are interested, please feel free to reach out and send me your CV (and transcript). It would also be helpful if you could briefly explain why you are interested in joining the lab and how your background and interests align with our research.
+If you are interested, feel free to reach out and send me your CV (and transcript). It would also be helpful if you could briefly explain why you are interested in joining the lab and how your background and interests align with our research.
