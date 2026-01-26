@@ -5,8 +5,8 @@
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # `jekyll serve`. If you change this file, please restart the server process.
 # Site Settings
-title                    : "Lyu Jun"
-description              : "Feiyimin Building, 22 Hankou Rd."
+title                    : "Lyu Jun (吕骏)"
+description              : "401, Feiyimin Building, 22 Hankou Rd."
 repository               : "Meiye-lj/Meiye-lj.github.io"
 google_scholar_stats_use_cdn : true
 
@@ -27,7 +27,7 @@ author:
   employer         :
   pubmed           : 
   googlescholar    : "https://scholar.google.com/citations?user=ZkRL7gIAAAAJ&hl"
-  email            : "lvjun_dnt@outlook.com"
+  email            : "junlyu@nju.edu.cn"
   researchgate     :  # e.g., "https://www.researchgate.net/profile/yourprofile"
   uri              :
   bitbucket        :
