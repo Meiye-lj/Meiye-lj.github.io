@@ -1,3 +1,10 @@
-Jun Lyu completed his PhD at Nanjing University, China, supervised by [Prof. He (Jason) Zhang](https://software.nju.edu.cn//hezhang/index.html). His research interests include improving software development efficiency and quality, particularly improving software build efficiency and quality in practice. His recent research interests are in software testing and AI4SE.
+**I am a research staff member at the Software Institute, Nanjing University. I am currently looking for motivated undergraduate, Master’s, and PhD students who are interested in software security, software testing, and AI for Software Engineering (AI4SE).**
 
-He has joined the job market, looking for academic or industrial jobs.
+An ideal candidate may have some of the following qualities:
+
+* Strong programming and implementation skills
+* A strong interest in conducting research and publishing in top-tier venues (e.g., ICSE, FSE, ISSTA)
+* The curiosity and courage to take on challenging and impactful problems
+* Resilience in handling setbacks (which are common in research), while maintaining a healthy work–life balance
+
+If you are interested, please feel free to reach out and send me your CV (and transcript). It would also be helpful if you could briefly explain why you are interested in joining the lab and how your background and interests align with our research.
