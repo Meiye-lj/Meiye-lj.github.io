@@ -1,3 +1,5 @@
+I completed my PhD at Nanjing University, China, supervised by [Prof. He (Jason) Zhang](https://software.nju.edu.cn//hezhang/index.html). My research focuses on improving the efficiency and quality of software development, with particular emphasis on practical challenges in software build efficiency and build reliability. More recently, my interests have expanded to software testing, security, and AI for Software Engineering (AI4SE).
+
 **I am a research staff member at the Software Institute, Nanjing University. I am currently looking for motivated undergraduate, Master’s, and PhD students who are interested in software security, software testing, and AI for Software Engineering (AI4SE).**
 
 An ideal candidate may have some of the following qualities:
