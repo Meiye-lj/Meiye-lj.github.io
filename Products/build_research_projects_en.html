@@ -1,1319 +1,1413 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Software Build Practices and Challenges</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1e40af',
-                        secondary: '#64748b',
-                        accent: '#0ea5e9',
-                        neutral: '#f8fafc',
-                        'base-100': '#ffffff'
-                    },
-                    fontFamily: {
-                        'serif': ['Crimson Text', 'serif'],
-                        'sans': ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <style>
-        .hero-gradient {
-            background: linear-gradient(135deg, #1e40af 0%, #0ea5e9 100%);
-        }
-        .text-shadow {
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .backdrop-blur {
-            backdrop-filter: blur(10px);
-        }
-        .toc-fixed {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 280px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid #e5e7eb;
-            z-index: 1000;
-            overflow-y: auto;
-            padding: 2rem 1.5rem;
-        }
-        .main-content {
-            margin-left: 280px;
-            min-height: 100vh;
-        }
-        .toc-link {
-            transition: all 0.2s ease;
-        }
-        .toc-link:hover {
-            color: #1e40af;
-            transform: translateX(4px);
-        }
-        .toc-link.active {
-            color: #1e40af;
-            font-weight: 600;
-        }
-        .section-divider {
-            background: linear-gradient(90deg, #1e40af, #0ea5e9);
-            height: 2px;
-            border-radius: 1px;
-        }
-        .pullquote {
-            border-left: 4px solid #1e40af;
-            background: #f8fafc;
-            font-style: italic;
-            position: relative;
-        }
-        .pullquote::before {
-            content: '"';
-            font-size: 4rem;
-            color: #1e40af;
-            position: absolute;
-            top: -1rem;
-            left: 1rem;
-            opacity: 0.3;
-        }
-        
-        /* Mermaid diagram styling */
-        .mermaid-container {
-            display: flex;
-            justify-content: center;
-            min-height: 300px;
-            max-height: 800px;
-            background: #ffffff;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 30px;
-            margin: 30px 0;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .mermaid-container .mermaid {
-            width: 100%;
-            max-width: 100%;
-            height: 100%;
-            cursor: grab;
-            transition: transform 0.3s ease;
-            transform-origin: center center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            touch-action: none; /* Prevent default behavior on touch devices */
-            -webkit-user-select: none; /* Prevent text selection */
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        
-        .mermaid-container .mermaid svg {
-            max-width: 100%;
-            height: 100%;
-            display: block;
-            margin: 0 auto;
-        }
-        
-        .mermaid-container .mermaid:active {
-            cursor: grabbing;
-        }
-        
-        .mermaid-container.zoomed .mermaid {
-            height: 100%;
-            width: 100%;
-            cursor: grab;
-        }
-        
-        .mermaid-controls {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            display: flex;
-            gap: 10px;
-            z-index: 20;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 8px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .mermaid-control-btn {
-            background: #ffffff;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            padding: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #374151;
-            font-size: 14px;
-            min-width: 36px;
-            height: 36px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .mermaid-control-btn:hover {
-            background: #f8fafc;
-            border-color: #3b82f6;
-            color: #3b82f6;
-            transform: translateY(-1px);
-        }
-        
-        .mermaid-control-btn:active {
-            transform: scale(0.95);
-        }
-        
-        /* Override mermaid default styles for better contrast and unified styling */
-        .mermaid .node rect,
-        .mermaid .node circle,
-        .mermaid .node ellipse,
-        .mermaid .node polygon {
-            stroke: #1e40af !important;
-            stroke-width: 2.5px !important;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15)) !important;
-        }
-        
-        /* Special styling for different node types with better contrast */
-        .mermaid .node[style*="fill:#1e40af"] rect,
-        .mermaid .node[style*="fill:#1e40af"] polygon {
-            fill: #1e40af !important;
-            stroke: #1e3a8a !important;
-            stroke-width: 3px !important;
-        }
-        
-        .mermaid .node[style*="fill:#0ea5e9"] rect,
-        .mermaid .node[style*="fill:#0ea5e9"] polygon {
-            fill: #0ea5e9 !important;
-            stroke: #0284c7 !important;
-            stroke-width: 3px !important;
-        }
-        
-        .mermaid .node[style*="fill:#10b981"] rect,
-        .mermaid .node[style*="fill:#10b981"] polygon {
-            fill: #10b981 !important;
-            stroke: #059669 !important;
-            stroke-width: 3px !important;
-        }
-        
-        .mermaid .node[style*="fill:#f59e0b"] rect,
-        .mermaid .node[style*="fill:#f59e0b"] polygon {
-            fill: #f59e0b !important;
-            stroke: #d97706 !important;
-            stroke-width: 3px !important;
-        }
-        
-        .mermaid .node[style*="fill:#64748b"] rect,
-        .mermaid .node[style*="fill:#64748b"] polygon {
-            fill: #64748b !important;
-            stroke: #475569 !important;
-            stroke-width: 3px !important;
-        }
-        
-        /* Default node styling for better contrast */
-        .mermaid .node:not([style*="fill"]) rect,
-        .mermaid .node:not([style*="fill"]) polygon {
-            fill: #ffffff !important;
-            stroke: #1e40af !important;
-            stroke-width: 2.5px !important;
-        }
-        
-        .mermaid .edgePath .path {
-            stroke: #64748b !important;
-            stroke-width: 2.5px !important;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1)) !important;
-        }
-        
-        .mermaid .edgeLabel {
-            background-color: #ffffff !important;
-            border-radius: 6px !important;
-            padding: 6px 10px !important;
-            border: 1px solid #e5e7eb !important;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-            font-weight: 500 !important;
-            color: #374151 !important;
-        }
-        
-        /* Text styling for better readability and contrast */
-        .mermaid .nodeLabel {
-            font-family: 'Inter', sans-serif !important;
-            font-size: 14px !important;
-            font-weight: 600 !important;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8) !important;
-            color: #1f2937 !important;
-            letter-spacing: 0.01em !important;
-        }
-        
-        /* Dark background node text styling */
-        .mermaid .node[style*="fill:#1e40af"] .nodeLabel,
-        .mermaid .node[style*="fill:#0ea5e9"] .nodeLabel,
-        .mermaid .node[style*="fill:#10b981"] .nodeLabel,
-        .mermaid .node[style*="fill:#f59e0b"] .nodeLabel,
-        .mermaid .node[style*="fill:#64748b"] .nodeLabel {
-            color: #ffffff !important;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-            font-weight: 600 !important;
-        }
-        
-        /* Ensure proper contrast for all text elements */
-        .mermaid text {
-            font-family: 'Inter', sans-serif !important;
-            font-weight: 500 !important;
-        }
-        
-        /* Timeline specific styling */
-        .mermaid .section0, .mermaid .section1, .mermaid .section2, .mermaid .section3 {
-            fill: #f8fafc !important;
-            stroke: #1e40af !important;
-            stroke-width: 2px !important;
-        }
-        
-        .mermaid .cScale0, .mermaid .cScale1, .mermaid .cScale2 {
-            fill: #1e40af !important;
-        }
-        
-        .mermaid .cScale0 text, .mermaid .cScale1 text, .mermaid .cScale2 text {
-            fill: #ffffff !important;
-            font-weight: 600 !important;
-        }
-        
-        .smooth-scroll {
-            scroll-behavior: smooth;
-        }
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Jun Lyu | Software Engineering and Intelligent Software Development Research</title>
+<meta content="Software R&amp;D efficiency, build systems, software security, AI4SE, and LLM agents." name="description"/>
+<style>
+    :root {
+      --bg: #f6f8fb;
+      --bg-soft: #eef3f8;
+      --card: rgba(255,255,255,.86);
+      --card-solid: #ffffff;
+      --text: #172033;
+      --muted: #627087;
+      --line: rgba(26, 42, 71, .10);
+      --primary: #246bfe;
+      --primary-2: #31b8d9;
+      --accent: #7c5cff;
+      --green: #20a46b;
+      --orange: #f59e0b;
+      --shadow: 0 24px 70px rgba(25, 42, 77, .12);
+      --shadow-soft: 0 16px 40px rgba(25, 42, 77, .08);
+      --radius: 24px;
+      --max: 1180px;
+    }
 
-        @media (max-width: 1024px) {
-            .toc-fixed {
-                display: none;
-            }
-            .main-content {
-                margin-left: 0;
-            }
-            .mermaid-control-btn:not(.reset-zoom) {
-                display: none;
-            }
-            .mermaid-controls {
-                top: auto;
-                bottom: 15px;
-                right: 15px;
-            }
-        }
-    </style>
-  <base target="_blank">
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(36,107,254,.18), transparent 30%),
+        radial-gradient(circle at 85% 4%, rgba(49,184,217,.16), transparent 28%),
+        radial-gradient(circle at 70% 60%, rgba(124,92,255,.10), transparent 25%),
+        var(--bg);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .page {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .noise {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: .05;
+      background-image:
+        linear-gradient(rgba(30,40,60,.6) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30,40,60,.6) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, black, transparent 80%);
+      z-index: -1;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: rgba(246, 248, 251, .78);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      white-space: nowrap;
+    }
+
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      display: grid;
+      place-items: center;
+      color: white;
+      box-shadow: 0 10px 28px rgba(36,107,254,.28);
+    }
+
+    .logo svg { width: 22px; height: 22px; }
+
+    .links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .links a {
+      padding: 9px 12px;
+      border-radius: 999px;
+      transition: .2s ease;
+    }
+
+    .links a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,.7);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 12px 18px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      box-shadow: var(--shadow-soft);
+      font-weight: 700;
+      transition: .2s ease;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      color: white;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 18px 45px rgba(36,107,254,.28);
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .hero {
+      padding: 86px 0 52px;
+      display: grid;
+      grid-template-columns: 1.12fr .88fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 13px;
+      border: 1px solid rgba(36,107,254,.16);
+      background: rgba(255,255,255,.74);
+      border-radius: 999px;
+      color: #2450a6;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .pulse {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 6px rgba(32,164,107,.13);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 1.04;
+      letter-spacing: -.055em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #18233a 0%, #246bfe 50%, #31b8d9 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 21px);
+      line-height: 1.75;
+      max-width: 760px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .stats {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,.72);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 16px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 27px;
+      letter-spacing: -.04em;
+      color: var(--text);
+    }
+
+    .stat span {
+      margin-top: 6px;
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: 34px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.72));
+      border: 1px solid rgba(255,255,255,.68);
+      box-shadow: var(--shadow);
+      padding: 28px;
+      overflow: hidden;
+      min-height: 550px;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(36,107,254,.23), transparent 64%);
+      top: -80px;
+      right: -80px;
+    }
+
+    .profile-top {
+      position: relative;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .avatar {
+      width: 92px;
+      height: 92px;
+      border-radius: 28px;
+      background:
+        linear-gradient(135deg, rgba(36,107,254,.14), rgba(49,184,217,.18)),
+        #fff;
+      border: 1px solid rgba(36,107,254,.14);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .avatar svg { width: 86px; height: 86px; }
+
+    .name {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -.05em;
+    }
+
+    .role {
+      color: var(--muted);
+      line-height: 1.55;
+      margin-top: 5px;
+    }
+
+    .focus-board {
+      position: relative;
+      z-index: 1;
+      margin-top: 28px;
+      display: grid;
+      gap: 13px;
+    }
+
+    .focus-item {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 13px;
+      align-items: start;
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.74);
+      border: 1px solid var(--line);
+    }
+
+    .icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(36,107,254,.12), rgba(49,184,217,.15));
+      color: var(--primary);
+    }
+
+    .focus-item h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      letter-spacing: -.02em;
+    }
+
+    .focus-item p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .section {
+      padding: 48px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.12;
+      letter-spacing: -.055em;
+    }
+
+    .section-desc {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 520px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.76);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: auto -60px -90px auto;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(36,107,254,.12), transparent 68%);
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 21px;
+      letter-spacing: -.035em;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.72;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.76);
+      color: #40516e;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .research-map {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+      margin-top: 16px;
+    }
+
+    .map-col {
+      display: grid;
+      gap: 12px;
+    }
+
+    .map-box {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.75);
+      border-radius: 20px;
+      padding: 18px;
+      min-height: 112px;
+    }
+
+    .map-box strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .map-box span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.58;
+    }
+
+    .center-node {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      min-height: 356px;
+      background:
+        linear-gradient(135deg, rgba(36,107,254,.92), rgba(49,184,217,.92));
+      color: #fff;
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: 0 24px 60px rgba(36,107,254,.25);
+    }
+
+    .center-node strong {
+      font-size: 30px;
+      line-height: 1.18;
+      letter-spacing: -.06em;
+    }
+
+    .center-node span {
+      display: block;
+      margin-top: 16px;
+      color: rgba(255,255,255,.86);
+      line-height: 1.65;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 16px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 19px;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      background: linear-gradient(var(--primary), transparent);
+    }
+
+    .tl-item {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      position: relative;
+    }
+
+    .dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid rgba(36,107,254,.18);
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+      box-shadow: var(--shadow-soft);
+      z-index: 1;
+      font-weight: 900;
+    }
+
+    .tl-body {
+      background: rgba(255,255,255,.75);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 17px 18px;
+    }
+
+    .tl-body h3 {
+      margin: 0 0 6px;
+      font-size: 17px;
+    }
+
+    .tl-body p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+
+    .topic-hero {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 18px;
+    }
+
+    .topic-panel {
+      border-radius: 28px;
+      padding: 28px;
+      background:
+        linear-gradient(135deg, rgba(36,107,254,.94), rgba(49,184,217,.90));
+      color: #fff;
+      box-shadow: 0 24px 60px rgba(36,107,254,.22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .topic-panel::after {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      right: -100px;
+      bottom: -120px;
+      background: radial-gradient(circle, rgba(255,255,255,.34), transparent 68%);
+    }
+
+    .topic-panel > * { position: relative; z-index: 1; }
+
+    .topic-panel h3 {
+      margin: 0 0 14px;
+      font-size: 30px;
+      line-height: 1.18;
+      letter-spacing: -.055em;
+    }
+
+    .topic-panel p {
+      margin: 0;
+      color: rgba(255,255,255,.84);
+      line-height: 1.78;
+      font-size: 15px;
+    }
+
+    .topic-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .topic-metric {
+      border-radius: 18px;
+      padding: 16px 12px;
+      background: rgba(255,255,255,.13);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .topic-metric strong {
+      display: block;
+      font-size: 24px;
+      letter-spacing: -.045em;
+      color: #fff;
+    }
+
+    .topic-metric span {
+      display: block;
+      margin-top: 4px;
+      color: rgba(255,255,255,.76);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .research-chain {
+      display: grid;
+      gap: 12px;
+    }
+
+    .chain-item {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 13px;
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.76);
+      border: 1px solid var(--line);
+    }
+
+    .chain-index {
+      width: 42px;
+      height: 42px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      color: #2450a6;
+      font-weight: 900;
+      background: linear-gradient(135deg, rgba(36,107,254,.12), rgba(49,184,217,.16));
+    }
+
+    .chain-item h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      letter-spacing: -.025em;
+    }
+
+    .chain-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.62;
+    }
+
+    .paper-group-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 10px 0 2px;
+      padding: 10px 4px 2px;
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .paper-group-title span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .pub.first-author {
+      background:
+        linear-gradient(135deg, rgba(36,107,254,.08), rgba(49,184,217,.08)),
+        rgba(255,255,255,.86);
+      border-color: rgba(36,107,254,.18);
+    }
+
+    .pub .authors {
+      display: block;
+      color: #40516e;
+      font-size: 13px;
+      line-height: 1.55;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .pub .bib {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 5px 8px;
+      background: rgba(36,107,254,.10);
+      color: #2450a6;
+      font-size: 12px;
+      font-weight: 900;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    .venue.hot {
+      background: linear-gradient(135deg, rgba(36,107,254,.18), rgba(49,184,217,.20));
+      color: #1c49a3;
+      border: 1px solid rgba(36,107,254,.16);
+    }
+
+    .pub-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .pub {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+    }
+
+    .venue {
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(36,107,254,.10), rgba(49,184,217,.13));
+      color: #2450a6;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-weight: 900;
+      min-height: 74px;
+      line-height: 1.25;
+      padding: 10px;
+    }
+
+    .pub h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      letter-spacing: -.02em;
+    }
+
+    .pub p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .mini-metric {
+      padding: 18px 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .mini-metric strong {
+      display: block;
+      font-size: 26px;
+      letter-spacing: -.04em;
+      color: var(--primary);
+    }
+
+    .mini-metric span {
+      display: block;
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .contact {
+      padding: 36px;
+      border-radius: 34px;
+      background:
+        linear-gradient(135deg, rgba(23,32,51,.96), rgba(31,54,91,.96)),
+        #172033;
+      color: white;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .contact::before {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(49,184,217,.36), transparent 66%);
+      right: -130px;
+      top: -110px;
+    }
+
+    .contact > * { position: relative; z-index: 1; }
+    .contact p { color: rgba(255,255,255,.72); }
+    .contact .tag { color: rgba(255,255,255,.82); border-color: rgba(255,255,255,.15); background: rgba(255,255,255,.08); }
+
+    footer {
+      padding: 36px 0 56px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+
+    /* English layout refinements */
+    .links a { padding: 9px 10px; }
+    .lead strong { color: #30425f; }
+    .role { font-size: 14px; }
+    .center-node strong { font-size: 28px; }
+    .topic-panel h3 { max-width: 620px; }
+    .pub h3 { line-height: 1.35; }
+    .paper-group-title { letter-spacing: .04em; }
+
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; padding-top: 52px; }
+      .hero-card { min-height: unset; }
+      .grid-3, .grid-2, .research-map, .metric-strip, .topic-hero, .topic-metrics { grid-template-columns: 1fr; }
+      .center-node { min-height: 220px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .section-head { align-items: start; flex-direction: column; }
+    }
+
+    @media (max-width: 720px) {
+      .links { display: none; }
+      .page, .nav { width: min(100% - 28px, var(--max)); }
+      .stats { grid-template-columns: 1fr; }
+      .pub { grid-template-columns: 1fr; }
+      .venue { place-items: start; text-align: left; }
+      h1 { letter-spacing: -.055em; }
+    }
+
+    @media print {
+      header, .hero-actions { display: none; }
+      body { background: #fff; }
+      .card, .hero-card, .contact, .stat { box-shadow: none; }
+      .section { break-inside: avoid; }
+    }
+  </style>
 </head>
-
-  <body class="bg-neutral text-gray-900 font-sans smooth-scroll">
-
-    <!-- Fixed Table of Contents -->
-    <nav class="toc-fixed">
-      <div class="mb-8">
-        <h3 class="font-serif font-semibold text-lg text-gray-800 mb-4">Table of Contents</h3>
-        <div class="space-y-3">
-          <a class="toc-link block text-sm text-gray-600 hover:text-primary transition-colors" href="#hero">Introduction</a>
-          <a class="toc-link block text-sm text-gray-600 hover:text-primary transition-colors" href="#section-1">1. Core Challenges of Software Build</a>
-          <a class="toc-link block text-sm text-gray-600 hover:text-primary transition-colors" href="#section-2">2. Automated Build Dependency Repair</a>
-          <a class="toc-link block text-sm text-gray-600 hover:text-primary transition-colors" href="#section-3">3. Accelerating Multi-Configuration Builds</a>
-          <a class="toc-link block text-sm text-gray-600 hover:text-primary transition-colors" href="#section-4">4. LLM-Based Automated Build</a>
-          <a class="toc-link block text-sm text-gray-600 hover:text-primary transition-colors" href="#section-5">5. AI-Powered Software Build: Impact and Outlook</a>
-        </div>
-      </div>
-
-      <div class="mt-8 pt-8 border-t border-gray-200">
-        <p class="text-xs text-gray-500 mb-2">Research Areas</p>
-        <div class="flex flex-wrap gap-2">
-          <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">AI for SE</span>
-          <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Software Build</span>
-          <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">DevOps</span>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="main-content">
-
-      <!-- Hero Section -->
-      <section class="relative min-h-screen flex items-center" id="hero">
-        <div class="absolute inset-0 hero-gradient"></div>
-        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
-
-        <!-- Background Image with Overlay -->
-        <div class="absolute inset-0">
-          <img alt="Modern software build system abstract background" class="w-full h-full object-cover opacity-30" src="https://kimi-web-img.moonshot.cn/img/ask.qcloudimg.com/3e4517695e03f79bf69cc01eb75f1b777dc01a95.png" size="wallpaper" aspect="wide" query="software build system abstract background" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
-        </div>
-
-        <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-16">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <!-- Main Title Section -->
-            <div class="lg:col-span-8">
-              <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-4 md:p-8 text-white">
-                <h1 class="font-serif text-3xl sm:text-4xl lg:text-6xl font-semibold leading-tight mb-6 text-shadow">
-                  <em>Software Build Practices and Challenges</em>
-                </h1>
-                <div class="w-24 h-1 bg-white bg-opacity-80 mb-8"></div>
-                <p class="font-sans text-base sm:text-xl leading-relaxed opacity-90 max-w-2xl">
-                  Exploring how artificial intelligence reshapes core challenges in software build, from dependency management to multi-configuration builds, and new solutions for end-to-end automation.
-                </p>
-              </div>
+<body>
+<div class="noise"></div>
+<header>
+<nav aria-label="Page navigation" class="nav">
+<a class="brand" href="#top">
+<span aria-hidden="true" class="logo">
+<svg fill="none" viewbox="0 0 24 24">
+<path d="M6 17.5V7.2c0-.7.6-1.2 1.3-1.1l9.7 1.8c.6.1 1 .6 1 1.2v8.4c0 .8-.7 1.4-1.5 1.2l-9.6-1.8c-.5-.1-.9-.6-.9-1.2Z" stroke="currentColor" stroke-width="2"></path>
+<path d="M9 10h6M9 13.5h4" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</span>
+<span>Jun Lyu · Research Profile</span>
+</a>
+<div class="links">
+<a href="#about">About</a>
+<a href="#research">Research</a>
+<a href="#projects">Projects</a>
+<a href="#build-errors">Build Dependencies</a>
+<a href="#publications">Publications</a>
+<a href="#students">Students</a>
+<a href="#contact">Contact</a>
+</div>
+</nav>
+</header>
+<main class="page" id="top">
+<section class="hero">
+<div>
+<div class="eyebrow"><span class="pulse"></span> Software Engineering · Software Security · AI4SE · LLM Agents</div>
+<h1>
+          Intelligent Software Engineering<br/>
+<span class="gradient-text">for Real Development Workflows</span>
+</h1>
+<p class="lead">
+          My research focuses on
+          <strong>observability, correctness, efficiency, and trustworthy data engineering</strong>in build systems, continuous integration, security analysis, and agent-assisted software development. I work on build dependency errors, incremental build reliability, automatic repair of missing dependencies, and LLM-assisted build environment generation, with the goal of bringing Coding Agents and software analysis techniques into real development workflows.
+        </p>
+<div class="hero-actions">
+<a class="btn primary" href="#research">Explore Research</a>
+<a class="btn" href="#students">Students &amp; Collaboration</a>
+</div>
+<div aria-label="Research overview" class="stats">
+<div class="stat">
+<strong>Build</strong>
+<span>Build ordering, build dependency error detection, and missing dependency repair</span>
+</div>
+<div class="stat">
+<strong>AI4SE</strong>
+<span>LLM-assisted software engineering, Agentic Coding, and code intelligence</span>
+</div>
+<div class="stat">
+<strong>LLM SCA</strong>
+<span>Software composition analysis, LLM application risk paths, and vulnerability reachability</span>
+</div>
+</div>
+</div>
+<aside aria-label="Profile card" class="hero-card" id="about">
+<div class="profile-top">
+<div aria-hidden="true" class="avatar">
+<svg fill="none" viewbox="0 0 120 120">
+<rect fill="white" height="92" rx="28" width="88" x="16" y="14"></rect>
+<path d="M60 63c17 0 30-12 30-27S77 10 60 10 30 21 30 36s13 27 30 27Z" fill="#DDEBFF"></path>
+<path d="M20 105c5-24 21-38 40-38s35 14 40 38" fill="#246BFE" opacity=".86"></path>
+<path d="M39 40c5 7 13 11 22 11 8 0 15-3 20-9" opacity=".72" stroke="#172033" stroke-linecap="round" stroke-width="5"></path>
+<circle cx="45" cy="34" fill="#172033" opacity=".75" r="4"></circle>
+<circle cx="75" cy="34" fill="#172033" opacity=".75" r="4"></circle>
+<path d="M32 88h56" opacity=".72" stroke="white" stroke-linecap="round" stroke-width="5"></path>
+</svg>
+</div>
+<div>
+<div class="name">Jun Lyu</div>
+<div class="role">
+              Assistant Researcher, Software Institute, Nanjing University / State Key Laboratory for Novel Software Technology<br/>
+              DevOps Lab
             </div>
-
-            <!-- Key Highlights Grid -->
-            <div class="lg:col-span-4">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-4 sm:p-6 text-white">
-                  <div class="text-xl sm:text-2xl font-bold mb-2">70%+</div>
-                  <div class="text-xs sm:text-sm opacity-80">Build time reduction</div>
-                </div>
-                <div class="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-4 sm:p-6 text-white">
-                  <div class="text-xl sm:text-2xl font-bold mb-2">5+</div>
-                  <div class="text-xs sm:text-sm opacity-80">Programming languages supported</div>
-                </div>
-                <div class="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-4 sm:p-6 text-white">
-                  <div class="text-xl sm:text-2xl font-bold mb-2">Automated</div>
-                  <div class="text-xs sm:text-sm opacity-80">Repair</div>
-                </div>
-                <div class="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-4 sm:p-6 text-white">
-                  <div class="text-xl sm:text-2xl font-bold mb-2">Intelligent</div>
-                  <div class="text-xs sm:text-sm opacity-80">Build</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 1: Core Challenges of Software Build -->
-      <section class="py-20 bg-white" id="section-1">
-        <div class="max-w-5xl mx-auto px-8">
-          <header class="mb-16">
-            <h2 class="font-serif text-4xl font-semibold text-gray-900 mb-6">
-              Core Challenges of Software Build: Effectiveness and Efficiency
-            </h2>
-            <div class="section-divider w-24 mb-8"></div>
-            <p class="font-sans text-xl text-gray-600 leading-relaxed max-w-4xl">
-              In software engineering, software build is the core process connecting source code to deliverable products. Its effectiveness and efficiency directly determine the speed and quality of software delivery. As software systems grow in scale and complexity, traditional build models face unprecedented bottlenecks.
+</div>
+</div>
+<div class="focus-board">
+<div class="focus-item">
+<div class="icon">01</div>
+<div>
+<h3>Research Focus</h3>
+<p>I study deployable software engineering methods and tools for real development scenarios, including build, testing, integration, repair, and agent collaboration.</p>
+</div>
+</div>
+<div class="focus-item">
+<div class="icon">02</div>
+<div>
+<h3>Core Question</h3>
+<p>How can reliable evidence be extracted from logs, scripts, dependencies, repository history, LLM call chains, and execution trajectories to support automated diagnosis and decision making?</p>
+</div>
+</div>
+<div class="focus-item">
+<div class="icon">03</div>
+<div>
+<h3>Methodology</h3>
+<p>My work combines program analysis, dynamic execution observation, knowledge-enhanced LLMs, benchmark construction, and industrial validation into a closed-loop research pipeline.</p>
+</div>
+</div>
+<div class="focus-item">
+<div class="icon">04</div>
+<div>
+<h3>Application Goal</h3>
+<p>The goal is to support reliable deployment of enterprise Coding Agents, CI/CD platforms, software supply-chain security techniques, and automated build/testing tools.</p>
+</div>
+</div>
+</div>
+</aside>
+</section>
+<section class="section" id="research">
+<div class="section-head">
+<div>
+<div class="kicker">Research Agenda</div>
+<h2>From “generating code” to “participating in software engineering”</h2>
+</div>
+<p class="section-desc">
+          Intelligence in software engineering is not merely about calling large language models. It requires integrating models, tools, context, execution environments, and quality validation into real development workflows.
+        </p>
+</div>
+<div class="research-map card">
+<div class="map-col">
+<div class="map-box">
+<strong>Build Dependency Errors and Incremental Build Reliability</strong>
+<span>I study detection, explanation, and repair methods for incomplete dependency declarations, mismatches between build execution and declarations, and error propagation caused by configuration switches in incremental builds.</span>
+</div>
+<div class="map-box">
+<strong>Build Ordering and Build Efficiency</strong>
+<span>For multi-configuration incremental builds, I characterize reuse boundaries and ordering sensitivity across configurations and explore ordering strategies that improve efficiency under correctness constraints.</span>
+</div>
+<div class="map-box">
+<strong>Build Environment Generation and Reproducible Builds</strong>
+<span>For Docker, Make, and C/C++ projects, I explore automated build environment generation, artifact consistency validation, and software supply-chain risk control.</span>
+</div>
+</div>
+<div class="center-node">
+<div>
+<strong>Trustworthy Software<br/>R&amp;D Efficiency and Agentic Engineering</strong>
+<span>
+              Using real repositories, real toolchains, and real industrial processes as research objects, I study integrated methods that connect data, models, tools, and validation.
+            </span>
+</div>
+</div>
+<div class="map-col">
+<div class="map-box">
+<strong>LLM Application Architecture and SCA</strong>
+<span>I identify LLM call sites, capability paths, external components, and vulnerability propagation relations to enable software composition analysis for LLM applications.</span>
+</div>
+<div class="map-box">
+<strong>Agentic Coding Data Engineering</strong>
+<span>I construct high-quality task libraries, trajectory libraries, validation rules, and automated judging sandboxes to support enterprise Coding Agent training and evaluation.</span>
+</div>
+<div class="map-box">
+<strong>LLM-Assisted Software Analysis</strong>
+<span>For bug localization, vulnerability detection, code repair, and build diagnosis, I explore knowledge enhancement, context organization, and trustworthy validation.</span>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="build-errors">
+<div class="section-head">
+<div>
+<div class="kicker">Build Dependency Research</div>
+<h2>Build Dependency Errors: From Incremental Build Reliability to Automated Repair</h2>
+</div>
+<p class="section-desc">
+          This is my most continuous research thread: starting from why incremental builds go wrong, I further study how to detect, explain, and repair such errors, and how to generate reliable build environments.
+        </p>
+</div>
+<div class="topic-hero">
+<div class="topic-panel">
+<h3>Core Problem: Build systems do more than “run commands”</h3>
+<p>
+            Modern build systems rely on scripts, declarative files, toolchains, system environments, and historical build states. When dependency declarations are missing, build execution diverges from declarations, configuration-switching orders are inappropriate, or environmental dependencies are incomplete, incremental builds may produce stale artifacts, incorrect binaries, or non-reproducible results. Therefore, build research is not only about acceleration; it also involves correctness boundaries, dependency evidence, error localization, and automated repair.
+          </p>
+<div class="topic-metrics">
+<div class="topic-metric">
+<strong>ISSTA'24</strong>
+<span>Incremental build dependency error detection</span>
+</div>
+<div class="topic-metric">
+<strong>TSE'25</strong>
+<span>Dynamic execution–declaration consistency analysis</span>
+</div>
+<div class="topic-metric">
+<strong>ASE'25</strong>
+<span>Automatic repair of missing dependency errors</span>
+</div>
+</div>
+</div>
+<div class="card research-chain">
+<div class="chain-item">
+<div class="chain-index">01</div>
+<div>
+<h3>Multi-configuration incremental build ordering</h3>
+<p>I study build reuse relations and ordering sensitivity across configurations, and explore how to schedule configuration builds to reduce redundant work while preserving correctness.</p>
+</div>
+</div>
+<div class="chain-item">
+<div class="chain-index">02</div>
+<div>
+<h3>Incremental build dependency error detection</h3>
+<p>For hidden missing dependencies in incremental builds, I identify which file, command, or artifact relations are not correctly modeled by the build system.</p>
+</div>
+</div>
+<div class="chain-item">
+<div class="chain-index">03</div>
+<div>
+<h3>Consistency Analysis between Build Execution and Dependency Declarations</h3>
+<p>By dynamically analyzing build execution behavior and comparing it with build declarations, I detect incomplete declarations, over-declarations, and execution-declaration dependency deviations.</p>
+</div>
+</div>
+<div class="chain-item">
+<div class="chain-index">04</div>
+<div>
+<h3>Automatic repair of missing dependency errors</h3>
+<p>I move from detection to repair by combining error logs, project structure, package-management knowledge, and validation feedback to generate deployable dependency repair solutions.</p>
+</div>
+</div>
+<div class="chain-item">
+<div class="chain-index">05</div>
+<div>
+<h3>LLM-Assisted Build Environment Generation</h3>
+<p>For Dockerfile generation and build environment reproduction, I combine build knowledge, repository context, and execution validation to improve automation in environment configuration.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="projects">
+<div class="section-head">
+<div>
+<div class="kicker">Projects &amp; Methodology</div>
+<h2>Major Research Projects and Technical Roadmap</h2>
+</div>
+<p class="section-desc">
+          My research starts from real software repositories and engineering workflows, with automated observation, verifiable experiments, and tool prototypes as core deliverables.
+        </p>
+</div>
+<div class="grid-3">
+<article class="card">
+<h3>Build Dependency Error Detection and Repair</h3>
+<p>
+            I study missing dependencies in incremental builds, inconsistencies between build execution and declarations, and missing system/library dependencies, forming a continuous research chain from detection and explanation to automated repair.
+          </p>
+<div class="tag-row">
+<span class="tag">Incremental Build</span>
+<span class="tag">Dependency Error</span>
+<span class="tag">Dynamic Analysis</span>
+<span class="tag">Auto Repair</span>
+</div>
+</article>
+<article class="card">
+<h3>Systematic Build Acceleration</h3>
+<p>
+            I analyze build time from three levels—multi-configuration builds, single builds, and critical paths—characterizing rebuild closures, waiting losses, long-chain phases, and attainable acceleration upper bounds.
+          </p>
+<div class="tag-row">
+<span class="tag">Build DAG</span>
+<span class="tag">Critical Path</span>
+<span class="tag">Reuse Boundary</span>
+<span class="tag">Ninja / Make</span>
+</div>
+</article>
+<article class="card">
+<h3>Software Composition Analysis for LLM Applications</h3>
+<p>
+            Through call chains and capability paths, I identify real dependency components in LLM applications and analyze the gaps among declared dependencies, actual usage, configuration-mediated usage, and vulnerability reachability.
+          </p>
+<div class="tag-row">
+<span class="tag">SCA</span>
+<span class="tag">Capability Path</span>
+<span class="tag">Vulnerability</span>
+<span class="tag">Architecture Mining</span>
+</div>
+</article>
+</div>
+<div class="grid-2" style="margin-top:18px">
+<article class="card">
+<h3>High-Quality Training Data Construction for Agentic Coding</h3>
+<p>
+            This project focuses on real tasks such as environment configuration, dependency repair, and build failure diagnosis. It records process behaviors including task planning, command execution, tool invocation, error recovery, rollback, and retry, and safeguards data quality through automated solvability checks, build/test validation, and risk filtering.
+          </p>
+<div class="tag-row">
+<span class="tag">Task Library</span>
+<span class="tag">Trajectory Library</span>
+<span class="tag">Sandbox</span>
+<span class="tag">Quality Report</span>
+</div>
+</article>
+<article class="card">
+<h3>LLM-Assisted Software Security and Quality Assurance</h3>
+<p>
+            By combining static analysis, dynamic execution evidence, vulnerability knowledge, and LLM reasoning, I study vulnerability detection, malicious injection variant detection, bug localization, and code repair.
+          </p>
+<div class="tag-row">
+<span class="tag">Software Security</span>
+<span class="tag">Vulnerability Detection</span>
+<span class="tag">Bug Localization</span>
+<span class="tag">LLM Prompting</span>
+</div>
+</article>
+</div>
+</section>
+<section class="section">
+<div class="section-head">
+<div>
+<div class="kicker">How I Work</div>
+<h2>Research Methodology: From Engineering Phenomena to Verifiable Tools</h2>
+</div>
+</div>
+<div class="grid-2">
+<div class="card">
+<div class="timeline">
+<div class="tl-item">
+<div class="dot">2</div>
+<div class="tl-body">
+<h3>Multi-Source Evidence Extraction</h3>
+<p>I integrate code, configuration, dependency declarations, build logs, test results, tool invocation traces, and repository history into traceable evidence chains.</p>
+</div>
+</div>
+<div class="tl-item">
+<div class="dot">3</div>
+<div class="tl-body">
+<h3>Automated Analysis and Generation</h3>
+<p>I combine program analysis, rule systems, knowledge graphs, and LLMs to support localization, diagnosis, repair, scheduling, and data generation.</p>
+</div>
+</div>
+<div class="tl-item">
+<div class="dot">4</div>
+<div class="tl-body">
+<h3>Experimental Validation and Scenario Feedback</h3>
+<p>I evaluate correctness, stability, efficiency, and deployability through benchmarks, sandboxes, real-repository reproduction, and industrial scenario trials.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h3>Typical Deliverables</h3>
+<p>
+            Rather than stopping at conceptual contributions, I emphasize engineering-verifiable outcomes: data specifications, task libraries, trajectory libraries, validation tools, prototype systems, experimental reports, and industrial scenario validation.
+          </p>
+<div class="metric-strip">
+<div class="mini-metric"><strong>01</strong><span>Data Specification</span></div>
+<div class="mini-metric"><strong>02</strong><span>Task Library</span></div>
+<div class="mini-metric"><strong>03</strong><span>Trajectory Library</span></div>
+<div class="mini-metric"><strong>04</strong><span>Validation Tools</span></div>
+<div class="mini-metric"><strong>05</strong><span>Quality Report</span></div>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="publications">
+<div class="section-head">
+<div>
+<div class="kicker">Selected Publications</div>
+<h2>Selected Publications</h2>
+</div>
+</div>
+<div class="card pub-list">
+<div class="paper-group-title">First-author papers <span>Main thread: build systems, build dependency errors, and build environment generation</span></div>
+<div class="pub first-author">
+<div class="venue hot">PACMSE<br/>FSE 2024</div>
+<div>
+<h3>Towards Efficient Build Ordering for Incremental Builds with Multiple Configurations <span class="badge">First Author</span></h3>
+<span class="authors">Lyu J, Li S, Zhang H, et al.</span>
+<p>This work studies ordering sensitivity and reuse opportunities in multi-configuration incremental builds, and explores ordering methods for improving build efficiency in multi-configuration settings.</p>
+<span class="bib">Proceedings of the ACM on Software Engineering, 2024, 1(FSE): 1494–1517.</span>
+</div>
+</div>
+<div class="pub first-author">
+<div class="venue hot">ISSTA<br/>2024</div>
+<div>
+<h3>Detecting Build Dependency Errors in Incremental Builds <span class="badge">First Author</span></h3>
+<span class="authors">Lyu J, Li S, Zhang H, et al.</span>
+<p>This work targets errors caused by missing or incomplete dependency declarations in incremental builds, and proposes automated detection methods for uncovering hidden build dependency problems.</p>
+<span class="bib">Proceedings of the 33rd ACM SIGSOFT International Symposium on Software Testing and Analysis, 2024: 1–12.</span>
+</div>
+</div>
+<div class="pub first-author">
+<div class="venue hot">TSE<br/>2025</div>
+<div>
+<h3>Detecting Build Dependency Errors by Dynamic Analysis of Build Execution against Declaration <span class="badge">First Author</span></h3>
+<span class="authors">Lyu J, Li S, Liu B, et al.</span>
+<p>This work dynamically analyzes build execution behavior and compares it against dependency declarations to identify inconsistencies between execution dependencies and declared dependencies.</p>
+<span class="bib">IEEE Transactions on Software Engineering, 2025.</span>
+</div>
+</div>
+<div class="pub first-author">
+<div class="venue hot">ASE<br/>2025</div>
+<div>
+<h3>Automatic Fixing of Missing Dependency Errors <span class="badge">First Author</span></h3>
+<span class="authors">Lyu J, Zhang H, Yang L, et al.</span>
+<p>This work advances from dependency error detection to automated repair by combining error evidence, dependency knowledge, and validation feedback to generate deployable fixes.</p>
+<span class="bib">2025 40th IEEE/ACM International Conference on Automated Software Engineering, IEEE, 2025: 597–609.</span>
+</div>
+</div>
+<div class="pub first-author">
+<div class="venue hot">ICSE<br/>2026</div>
+<div>
+<h3>Automatic Dockerfile Generation with Large Language Models <span class="badge">First Author</span></h3>
+<span class="authors">Lyu J, Zhang H, et al.</span>
+<p>This work studies LLM-based Dockerfile generation and software build automation, focusing on generation and validation from repository context to executable build environments.</p>
+<span class="bib">Proceedings of the 48th IEEE/ACM International Conference on Software Engineering, 2026.</span>
+</div>
+</div>
+<div class="paper-group-title">Selected co-authored papers <span>Software R&amp;D efficiency, code review, blockchain software engineering, AI4SE, and software security</span></div>
+<div class="pub">
+<div class="venue">ASE<br/>2024</div>
+<div>
+<h3>An Explainable Automated Model for Measuring Software Engineer Contribution</h3>
+<span class="authors">Li Y, Zhang H, Jin Y, Ren Z, Dong L, Lyu J, et al.</span>
+<p>This work studies explainable automated models for measuring software engineer contribution, supporting R&amp;D efficiency assessment and engineering management decisions.</p>
+<span class="bib">Proceedings of the 39th IEEE/ACM International Conference on Automated Software Engineering, 2024: 783–794.</span>
+</div>
+</div>
+<div class="pub">
+<div class="venue">ASE<br/>2024</div>
+<div>
+<h3>GPP: A Graph-Powered Prioritizer for Code Review Requests</h3>
+<span class="authors">Yang L, Xu J, Zhang H, Wu F, Lyu J, et al.</span>
+<p>This work uses graph-based modeling to prioritize code review requests, improving review resource allocation and engineering collaboration efficiency.</p>
+<span class="bib">Proceedings of the 39th IEEE/ACM International Conference on Automated Software Engineering, 2024: 104–116.</span>
+</div>
+</div>
+<div class="pub">
+<div class="venue">TSE<br/>2025</div>
+<div>
+<h3>Decision Support for Selecting Blockchain-Based Application Design Patterns with Layered Taxonomy and Quality Attributes</h3>
+<span class="authors">Wang Y, Huang Y, Li J, Li S, Zhang H, Lyu J, et al.</span>
+<p>This work constructs a layered taxonomy and quality-attribute-driven decision support method for selecting blockchain-based application design patterns.</p>
+<span class="bib">IEEE Transactions on Software Engineering, 2025, 51(4): 1039–1066.</span>
+</div>
+</div>
+<div class="pub">
+<div class="venue">PACMSE<br/>FSE 2025</div>
+<div>
+<h3>A Knowledge Enhanced Large Language Model for Bug Localization</h3>
+<span class="authors">Li Y, Liu B, Zhang T, Wang Z, Lo D, Yang L, Lyu J, et al.</span>
+<p>This work explores context organization, knowledge injection, and localization effectiveness of knowledge-enhanced LLMs for bug localization.</p>
+<span class="bib">Proceedings of the ACM on Software Engineering, 2025, 2(FSE): 1914–1936.</span>
+</div>
+</div>
+<div class="pub">
+<div class="venue">TOSEM<br/>2024</div>
+<div>
+<h3>One Size Does Not Fit All: Investigating Efficacy of Perplexity in Detecting LLM-Generated Code</h3>
+<span class="authors">Xu J, Zhang H, Yang Y, Yang L, Cheng Z, Lyu J, et al.</span>
+<p>This work analyzes the applicability boundaries of perplexity for detecting LLM-generated code and reveals the limitations of one-size-fits-all detection strategies across different scenarios.</p>
+<span class="bib">ACM Transactions on Software Engineering and Methodology, 2024.</span>
+</div>
+</div>
+<div class="pub">
+<div class="venue">TSE<br/>2026</div>
+<div>
+<h3>Towards Robust Detection for Malicious Injection Variants</h3>
+<span class="authors">Yang Y, Liu B, Zhang H, Xu J, Zhou X, Lyu J, et al.</span>
+<p>This work studies robust software security detection methods and generalization capability for malicious injection variants.</p>
+<span class="bib">IEEE Transactions on Software Engineering, 2026 [to appear].</span>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="students">
+<div class="section-head">
+<div>
+<div class="kicker">Students &amp; Collaboration</div>
+<h2>Students Interested in Real Software Engineering Problems Are Welcome</h2>
+</div>
+<p class="section-desc">
+          I especially welcome students who have engineering implementation skills, are willing to dive into real toolchains and open-source repositories, and are interested in software security, testing, or AI4SE.
+        </p>
+</div>
+<div class="grid-3">
+<article class="card">
+<h3>Potential Topics</h3>
+<p>Software build, software supply-chain security, program analysis, LLM agents, code intelligence, automated testing, and vulnerability detection.</p>
+</article>
+<article class="card">
+<h3>Expected Skills</h3>
+<p>Ability to read and modify real codebases, familiarity with at least one of Python/Java/C, and willingness to conduct experiments, reproduction studies, and tool development.</p>
+</article>
+<article class="card">
+<h3>Mentoring Style</h3>
+<p>Starting from students’ interests and small concrete problems, we gradually develop reproducible experiments, tool prototypes, paper submissions, or industrial collaboration deliverables, with weekly one-on-one meetings.</p>
+</article>
+</div>
+</section>
+<section class="section" id="contact">
+<div class="contact">
+<div class="section-head" style="margin-bottom: 0;">
+<div>
+<div class="kicker" style="color:#74d7ff;">Contact</div>
+<h2>Open to Collaboration</h2>
+<p class="section-desc">
+              Please feel free to reach out if you are interested in software R&amp;D efficiency, build systems, software security, AI4SE, Agentic Coding, or the deployment of enterprise-level development tools.
             </p>
-          </header>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <div class="space-y-8">
-              <div class="bg-gray-50 rounded-xl p-8">
-                <h3 class="font-serif text-2xl font-semibold text-gray-900 mb-4">
-                  <i class="fas fa-target text-primary mr-3"></i>
-                  Effectiveness Challenges
-                </h3>
-                <p class="text-gray-600 leading-relaxed">
-                  The correctness and reliability of build results are often threatened by complex dependency relationships and tedious manual configurations. An incomplete dependency declaration may lead to build failures or unexpected bugs.
-                </p>
-              </div>
-
-              <div class="bg-gray-50 rounded-xl p-8">
-                <h3 class="font-serif text-2xl font-semibold text-gray-900 mb-4">
-                  <i class="fas fa-tachometer-alt text-primary mr-3"></i>
-                  Efficiency Challenges
-                </h3>
-                <p class="text-gray-600 leading-relaxed">
-                  Build speed and resource utilization face severe challenges in multi-configuration, large-scale projects. The traditional approach of clean builds for each configuration is extremely inefficient.
-                </p>
-              </div>
-            </div>
-
-            <div class="bg-blue-50 rounded-xl p-8">
-              <h3 class="font-serif text-2xl font-semibold text-gray-900 mb-6">Three Bottlenecks of Traditional Build Models</h3>
-              <div class="space-y-6">
-                <div class="flex items-start space-x-4">
-                  <div class="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold text-sm">1</div>
-                  <div>
-                    <h4 class="font-semibold text-gray-900 mb-2">Complexity of Dependency Management</h4>
-                    <p class="text-gray-600 text-sm">Manual maintenance of complex dependency networks, prone to missing indirect dependencies, leading to build uncertainty</p>
-                  </div>
-                </div>
-                <div class="flex items-start space-x-4">
-                  <div class="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold text-sm">2</div>
-                  <div>
-                    <h4 class="font-semibold text-gray-900 mb-2">Inefficiency of Multi-Configuration Builds</h4>
-                    <p class="text-gray-600 text-sm">Clean builds for each configuration cause massive duplication and resource waste</p>
-                  </div>
-                </div>
-                <div class="flex items-start space-x-4">
-                  <div class="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold text-sm">3</div>
-                  <div>
-                    <h4 class="font-semibold text-gray-900 mb-2">Error-Prone Manual Build Processes</h4>
-                    <p class="text-gray-600 text-sm">Ambiguous README documentation, unclear dependencies requiring extensive trial and error</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="pullquote rounded-xl p-8 mb-12">
-            <blockquote class="font-serif text-2xl text-gray-800 leading-relaxed pl-12">
-              These deeply rooted problems have long relied on developers' experience and manual troubleshooting, making scalable and automated solutions difficult. However, driven by the wave of AI technology, these challenges are ushering in new solutions.
-            </blockquote>
-          </div>
-
-          <!-- AI-Driven Research New Paradigm -->
-          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-12">
-            <h3 class="font-serif text-3xl font-semibold text-gray-900 mb-8 text-center">AI-Driven Research New Paradigm</h3>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <div>
-                <h4 class="font-serif text-xl font-semibold text-gray-900 mb-4">From Automation to Intelligence</h4>
-                <p class="text-gray-600 leading-relaxed mb-6">
-                  Traditional automation tools are mostly rule-based, lacking understanding of complex contexts and intelligent decision-making capabilities. AI is no longer just a tool that executes instructions, but has become a "partner" that understands developer intentions, analyzes code logic, predicts potential problems, and provides intelligent suggestions.
-                </p>
-              </div>
-
-              <div>
-                <h4 class="font-serif text-xl font-semibold text-gray-900 mb-4">AI Application Trends in Software Engineering</h4>
-                <div class="space-y-3">
-                  <div class="flex items-center space-x-3">
-                    <i class="fas fa-code text-primary"></i>
-                    <span class="text-gray-600">Code Generation and Completion</span>
-                  </div>
-                  <div class="flex items-center space-x-3">
-                    <i class="fas fa-bug text-primary"></i>
-                    <span class="text-gray-600">Automated Testing and Defect Detection</span>
-                  </div>
-                  <div class="flex items-center space-x-3">
-                    <i class="fas fa-robot text-primary"></i>
-                    <span class="text-gray-600">Intelligent Operations and Monitoring</span>
-                  </div>
-                  <div class="flex items-center space-x-3">
-                    <i class="fas fa-project-diagram text-primary"></i>
-                    <span class="text-gray-600">Architecture Design and Project Management</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 2: Automated Build Dependency Repair -->
-      <section class="py-20 bg-gray-50" id="section-2">
-        <div class="max-w-5xl mx-auto px-8">
-          <header class="mb-16">
-            <h2 class="font-serif text-4xl font-semibold text-gray-900 mb-6">
-              Automated Build Dependency Repair: Enhancing Build Effectiveness
-            </h2>
-            <div class="section-divider w-24 mb-8"></div>
-            <p class="font-sans text-xl text-gray-600 leading-relaxed max-w-4xl">
-              Dependency management is a core part of the build process. Traditional manual maintenance is not only error-prone but also difficult to adapt to the complexity of modern software projects.
-            </p>
-          </header>
-
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-            <div class="bg-white rounded-xl p-8 shadow-sm">
-              <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-6">
-                <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
-              </div>
-              <h3 class="font-serif text-xl font-semibold text-gray-900 mb-4">Incomplete Dependency Declaration</h3>
-              <p class="text-gray-600 text-sm leading-relaxed">
-                Developers often miss indirect dependency header files or forget to update Makefiles after code refactoring, leading to "dependency pollution" issues.
-              </p>
-            </div>
-
-            <div class="bg-white rounded-xl p-8 shadow-sm">
-              <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-6">
-                <i class="fas fa-cogs text-orange-600 text-xl"></i>
-              </div>
-              <h3 class="font-serif text-xl font-semibold text-gray-900 mb-4">Complex Script Semantics</h3>
-              <p class="text-gray-600 text-sm leading-relaxed">
-                Makefile syntax, while powerful, is quite obscure, containing many special symbols, implicit rules, and functions, increasing maintenance difficulty.
-              </p>
-            </div>
-
-            <div class="bg-white rounded-xl p-8 shadow-sm">
-              <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                <i class="fas fa-search text-blue-600 text-xl"></i>
-              </div>
-              <h3 class="font-serif text-xl font-semibold text-gray-900 mb-4">Debugging Difficulties</h3>
-              <p class="text-gray-600 text-sm leading-relaxed">
-                The build process may succeed completely, but the generated software behavior is wrong. This hidden nature poses great challenges for debugging.
-              </p>
-            </div>
-          </div>
-
-          <!-- AI Solution -->
-          <div class="bg-white rounded-2xl p-12 mb-16 shadow-sm">
-            <h3 class="font-serif text-3xl font-semibold text-gray-900 mb-8 text-center">Dynamic Modeling and Dependency Inference</h3>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <div>
-                <h4 class="font-serif text-xl font-semibold text-gray-900 mb-6">
-                  <i class="fas fa-project-diagram text-primary mr-3"></i>
-                  Dynamic Modeling: Complete Description of Build Process
-                </h4>
-                <div class="space-y-4 text-gray-600">
-                  <p class="leading-relaxed">
-                    Instead of relying solely on static Makefiles, we run the actual build process, monitor system calls and file access behaviors to build a complete and precise model of the build process.
-                  </p>
-                  <ul class="space-y-2 ml-6">
-                    <li class="flex items-start space-x-2">
-                      <i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i>
-                      <span>Capture all file access behaviors</span>
-                    </li>
-                    <li class="flex items-start space-x-2">
-                      <i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i>
-                      <span>Identify implicit dependencies</span>
-                    </li>
-                    <li class="flex items-start space-x-2">
-                      <i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i>
-                      <span>Build precise dependency graph</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div>
-                <h4 class="font-serif text-xl font-semibold text-gray-900 mb-6">
-                  <i class="fas fa-brain text-primary mr-3"></i>
-                  Dependency Inference: Efficient Error Detection
-                </h4>
-                <div class="space-y-4 text-gray-600">
-                  <p class="leading-relaxed">
-                    By analyzing code changes and Makefile modifications, infer possible changed dependencies, and perform targeted detection only on these dependencies, avoiding full analysis.
-                  </p>
-                  <ul class="space-y-2 ml-6">
-                    <li class="flex items-start space-x-2">
-                      <i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i>
-                      <span>Incremental detection strategy</span>
-                    </li>
-                    <li class="flex items-start space-x-2">
-                      <i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i>
-                      <span>Intelligent error localization</span>
-                    </li>
-                    <li class="flex items-start space-x-2">
-                      <i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i>
-                      <span>Real-time feedback mechanism</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Auto Repair Technology -->
-          <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-12">
-            <h3 class="font-serif text-3xl font-semibold text-gray-900 mb-8 text-center">AI Auto Repair: Style-Based Build Declaration Generation</h3>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div class="space-y-6">
-                <h4 class="font-serif text-xl font-semibold text-gray-900">Intelligent Build Script Repair</h4>
-                <p class="text-gray-600 leading-relaxed">
-                  Identify the writing style and patterns of Makefiles in open source projects, and intelligently generate repair suggestions. Analyze the writing style of existing Makefiles in the project, including variable naming conventions, target organization structure, dependency list format, etc.
-                </p>
-                <div class="bg-white rounded-lg p-6 border-l-4 border-primary">
-                  <p class="text-gray-700 font-medium">
-                    "When a dependency error is detected, the system identifies the declaration style and generates a repair patch that conforms to the project's style."
-                  </p>
-                </div>
-              </div>
-
-              <div class="bg-white rounded-xl p-8">
-                <h4 class="font-serif text-xl font-semibold text-gray-900 mb-6 text-center">Repair Process</h4>
-                <div class="space-y-4">
-                  <div class="flex items-center space-x-4">
-                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold text-sm">1</div>
-                    <span class="text-gray-600">Detect dependency error</span>
-                  </div>
-                  <div class="flex items-center space-x-4">
-                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold text-sm">2</div>
-                    <span class="text-gray-600">Analyze project style</span>
-                  </div>
-                  <div class="flex items-center space-x-4">
-                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold text-sm">3</div>
-                    <span class="text-gray-600">Generate repair patch</span>
-                  </div>
-                  <div class="flex items-center space-x-4">
-                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold text-sm">4</div>
-                    <span class="text-gray-600">Maintain style consistency</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 3: Accelerating Multi-Configuration Builds -->
-      <section class="py-20 bg-white" id="section-3">
-        <div class="max-w-5xl mx-auto px-8">
-          <header class="mb-16">
-            <h2 class="font-serif text-4xl font-semibold text-gray-900 mb-6">
-              Accelerating Multi-Configuration Builds: Improving Build Efficiency
-            </h2>
-            <div class="section-divider w-24 mb-8"></div>
-            <p class="font-sans text-xl text-gray-600 leading-relaxed max-w-4xl">
-              Modern software projects need to support multiple configurations to adapt to different runtime environments and user needs. The traditional approach of clean builds for each configuration is extremely inefficient.
-            </p>
-          </header>
-
-          <!-- Problem Description -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <div class="bg-red-50 rounded-xl p-8">
-              <h3 class="font-serif text-2xl font-semibold text-gray-900 mb-6">
-                <i class="fas fa-clock text-red-600 mr-3"></i>
-                Limitations of Traditional Clean Builds
-              </h3>
-              <div class="space-y-4">
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Time Cost</h4>
-                  <p class="text-gray-600 text-sm">Large projects may take hours for a single build, 10 configurations require 10x time</p>
-                </div>
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Resource Waste</h4>
-                  <p class="text-gray-600 text-sm">Shared code is repeatedly compiled, wasting CPU time and computing resources</p>
-                </div>
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Slow Iteration</h4>
-                  <p class="text-gray-600 text-sm">Extends delivery cycles, affecting rapid iteration in agile development</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-orange-50 rounded-xl p-8">
-              <h3 class="font-serif text-2xl font-semibold text-gray-900 mb-6">
-                <i class="fas fa-server text-orange-600 mr-3"></i>
-                Build Burden of Modern Projects
-              </h3>
-              <div class="space-y-4">
-                <div class="flex items-center justify-between bg-white rounded-lg p-4">
-                  <span class="text-gray-700">OS Support</span>
-                  <span class="font-semibold text-orange-600">Linux-based</span>
-                </div>
-                <div class="flex items-center justify-between bg-white rounded-lg p-4">
-                  <span class="text-gray-700">Hardware Architecture</span>
-                  <span class="font-semibold text-orange-600">2 types</span>
-                </div>
-                <div class="flex items-center justify-between bg-white rounded-lg p-4">
-                  <span class="text-gray-700">Compilation Mode</span>
-                  <span class="font-semibold text-orange-600">2 types</span>
-                </div>
-                <div class="border-t-2 border-orange-200 pt-4">
-                  <div class="flex items-center justify-between">
-                    <span class="font-semibold text-gray-900">Total Configurations</span>
-                    <span class="font-bold text-orange-600 text-lg">20 configurations</span>
-                  </div>
-                  <p class="text-gray-600 text-sm mt-2">Single build 2 hours → Total 40 hours</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- AI Solution -->
-          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-12 mb-16">
-            <h3 class="font-serif text-3xl font-semibold text-gray-900 mb-8 text-center">Solution: Incremental Builds and Configuration Sorting</h3>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
-              <div class="bg-white rounded-xl p-8">
-                <h4 class="font-serif text-xl font-semibold text-gray-900 mb-6">
-                  <i class="fas fa-recycle text-primary mr-3"></i>
-                  Incremental Build: Maximize Reuse of Intermediate Products
-                </h4>
-                <p class="text-gray-600 leading-relaxed mb-6">
-                  Reuse previously generated intermediate products (such as .o object files) as much as possible during the build process, rather than compiling from scratch each time. Code shared between different configurations only needs to be compiled once.
-                </p>
-                <div class="space-y-3">
-                  <div class="flex items-center space-x-3">
-                    <i class="fas fa-arrow-right text-primary"></i>
-                    <span class="text-gray-600 text-sm">Reuse intermediate products across configurations</span>
-                  </div>
-                  <div class="flex items-center space-x-3">
-                    <i class="fas fa-arrow-right text-primary"></i>
-                    <span class="text-gray-600 text-sm">Reduce duplicate compilation work</span>
-                  </div>
-                  <div class="flex items-center space-x-3">
-                    <i class="fas fa-arrow-right text-primary"></i>
-                    <span class="text-gray-600 text-sm">Significantly shorten build time</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="bg-white rounded-xl p-8">
-                <h4 class="font-serif text-xl font-semibold text-gray-900 mb-6">
-                  <i class="fas fa-sort-amount-up text-primary mr-3"></i>
-                  Configuration Sorting: Optimize Build Order
-                </h4>
-                <p class="text-gray-600 leading-relaxed mb-6">
-                  By analyzing similarities between different configurations, intelligently determine the optimal build order to maximize intermediate product reuse. Configurations with high similarity are scheduled together.
-                </p>
-                <div class="space-y-3">
-                  <div class="flex items-center space-x-3">
-                    <i class="fas fa-arrow-right text-primary"></i>
-                    <span class="text-gray-600 text-sm">Analyze configuration similarity</span>
-                  </div>
-                  <div class="flex items-center space-x-3">
-                    <i class="fas fa-arrow-right text-primary"></i>
-                    <span class="text-gray-600 text-sm">Build similarity graph</span>
-                  </div>
-                  <div class="flex items-center space-x-3">
-                    <i class="fas fa-arrow-right text-primary"></i>
-                    <span class="text-gray-600 text-sm">Calculate optimal build sequence</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Build Flowchart -->
-            <div class="bg-white rounded-xl p-8">
-              <h4 class="font-serif text-xl font-semibold text-gray-900 mb-6 text-center">Intelligent Build Process</h4>
-              <div class="mermaid-container">
-                <div class="mermaid-controls">
-                  <button class="mermaid-control-btn zoom-in" title="Zoom In">
-                    <i class="fas fa-search-plus"></i>
-                  </button>
-                  <button class="mermaid-control-btn zoom-out" title="Zoom Out">
-                    <i class="fas fa-search-minus"></i>
-                  </button>
-                  <button class="mermaid-control-btn reset-zoom" title="Reset">
-                    <i class="fas fa-expand-arrows-alt"></i>
-                  </button>
-                  <button class="mermaid-control-btn fullscreen" title="Fullscreen">
-                    <i class="fas fa-expand"></i>
-                  </button>
-                </div>
-                <div class="mermaid">
-                  graph LR
-                  A[&#34;Code Commit&#34;] --&gt; B[&#34;Configuration Similarity Analysis&#34;]
-                  B --&gt; C[&#34;Intelligent Sorting&#34;]
-                  C --&gt; D[&#34;Incremental Build&#34;]
-                  D --&gt; E[&#34;Intermediate Product Reuse&#34;]
-                  E --&gt; F[&#34;Multi-Config Parallel Build&#34;]
-                  F --&gt; G[&#34;Build Complete&#34;]
-
-                  style A fill:#1e40af,color:#ffffff,stroke:#1e3a8a,stroke-width:3px
-                  style B fill:#0ea5e9,color:#ffffff,stroke:#0284c7,stroke-width:3px
-                  style C fill:#10b981,color:#ffffff,stroke:#059669,stroke-width:3px
-                  style D fill:#f59e0b,color:#ffffff,stroke:#d97706,stroke-width:3px
-                  style E fill:#64748b,color:#ffffff,stroke:#475569,stroke-width:3px
-                  style F fill:#1e40af,color:#ffffff,stroke:#1e3a8a,stroke-width:3px
-                  style G fill:#0ea5e9,color:#ffffff,stroke:#0284c7,stroke-width:3px
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Effect Verification -->
-          <div class="bg-white rounded-2xl p-12 shadow-sm">
-            <h3 class="font-serif text-3xl font-semibold text-gray-900 mb-8 text-center">Effect Verification: Significant Improvement in Multi-Config Build Efficiency</h3>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div class="space-y-6">
-                <h4 class="font-serif text-xl font-semibold text-gray-900">Experimental Data and Performance Comparison</h4>
-                <p class="text-gray-600 leading-relaxed">
-                  By comparing clean builds, incremental builds, and sorted incremental builds, experimental results clearly demonstrate the effectiveness of the AI-driven approach.
-                </p>
-
-                <div class="space-y-4">
-                  <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-500">
-                    <div class="flex items-center justify-between">
-                      <span class="font-semibold text-gray-900">Sorted Incremental vs Clean Build</span>
-                      <span class="text-green-600 font-bold">70%+ Time Reduction</span>
-                    </div>
-                  </div>
-
-                  <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
-                    <div class="flex items-center justify-between">
-                      <span class="font-semibold text-gray-900">Sorted Incremental vs Regular Incremental</span>
-                      <span class="text-blue-600 font-bold">20-30% Additional Improvement</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="bg-gray-50 rounded-xl p-8">
-                <h4 class="font-serif text-xl font-semibold text-gray-900 mb-6 text-center">Key Advantages</h4>
-                <div class="space-y-4">
-                  <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                      <i class="fas fa-clock text-green-600"></i>
-                    </div>
-                    <div>
-                      <h5 class="font-semibold text-gray-900">Significantly Reduced Build Time</h5>
-                      <p class="text-gray-600 text-sm">Development teams complete builds and tests faster</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                      <i class="fas fa-dollar-sign text-blue-600"></i>
-                    </div>
-                    <div>
-                      <h5 class="font-semibold text-gray-900">Reduced Resource Consumption</h5>
-                      <p class="text-gray-600 text-sm">Saves hardware costs and cloud service fees</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                      <i class="fas fa-sync text-purple-600"></i>
-                    </div>
-                    <div>
-                      <h5 class="font-semibold text-gray-900">Improved CI/CD Efficiency</h5>
-                      <p class="text-gray-600 text-sm">More frequent code commits and faster feedback</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 4: LLM-Based Automated Build -->
-      <section class="py-20 bg-gray-50" id="section-4">
-        <div class="max-w-5xl mx-auto px-8">
-          <header class="mb-16">
-            <h2 class="font-serif text-4xl font-semibold text-gray-900 mb-6">
-              LLM-Based Automated Build: Achieving End-to-End Automation
-            </h2>
-            <div class="section-divider w-24 mb-8"></div>
-            <p class="font-sans text-xl text-gray-600 leading-relaxed max-w-4xl">
-              The complexity and uncertainty of open-source project builds have been major obstacles to developer participation. Large language models provide new ideas for solving this problem.
-            </p>
-          </header>
-
-          <!-- Problem Description -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <div class="bg-red-50 rounded-xl p-8">
-              <h3 class="font-serif text-2xl font-semibold text-gray-900 mb-6">
-                <i class="fas fa-file-alt text-red-600 mr-3"></i>
-                Ambiguity of README Documentation
-              </h3>
-              <div class="space-y-4">
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Disorganized Structure</h4>
-                  <p class="text-gray-600 text-sm">Build steps mixed with background introduction and usage instructions, lacking clear structure</p>
-                </div>
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Vague Instructions</h4>
-                  <p class="text-gray-600 text-sm">Expressions like "install necessary dependencies" lack specific details</p>
-                </div>
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Environment Differences</h4>
-                  <p class="text-gray-600 text-sm">Different user OS and software versions lead to build failures</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-orange-50 rounded-xl p-8">
-              <h3 class="font-serif text-2xl font-semibold text-gray-900 mb-6">
-                <i class="fas fa-puzzle-piece text-orange-600 mr-3"></i>
-                Unclear Dependency Relationships
-              </h3>
-              <div class="space-y-4">
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Implicit Dependencies</h4>
-                  <p class="text-gray-600 text-sm">Only core dependencies mentioned, ignoring other important implicit dependencies</p>
-                </div>
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Missing Versions</h4>
-                  <p class="text-gray-600 text-sm">No clear specification of required dependency versions</p>
-                </div>
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Reverse Engineering</h4>
-                  <p class="text-gray-600 text-sm">Users need to invest significant time exploring build requirements</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- AI Solution -->
-          <div class="bg-white rounded-2xl p-12 mb-16 shadow-sm">
-            <h3 class="font-serif text-3xl font-semibold text-gray-900 mb-8 text-center">AI Solution: LLM-Driven Dockerfile Generation</h3>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
-              <div class="space-y-6">
-                <h4 class="font-serif text-xl font-semibold text-gray-900">
-                  <i class="fas fa-robot text-primary mr-3"></i>
-                  Automatic Dockerfile Generation
-                </h4>
-                <p class="text-gray-600 leading-relaxed">
-                  Take the project source code repository as input, leverage LLM's powerful code understanding and generation capabilities to automatically analyze project structure, language, and dependencies, and output Dockerfiles that can successfully build the project.
-                </p>
-
-                <div class="bg-gray-50 rounded-lg p-6">
-                  <h5 class="font-semibold text-gray-900 mb-4">Workflow</h5>
-                  <div class="space-y-3">
-                    <div class="flex items-center space-x-3">
-                      <div class="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold">1</div>
-                      <span class="text-gray-600 text-sm">Scan code repository, identify language, build system</span>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                      <div class="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold">2</div>
-                      <span class="text-gray-600 text-sm">Infer required dependencies, compilers, toolchains</span>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                      <div class="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold">3</div>
-                      <span class="text-gray-600 text-sm">Generate standardized Dockerfile</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="space-y-6">
-                <h4 class="font-serif text-xl font-semibold text-gray-900">
-                  <i class="fas fa-wrench text-primary mr-3"></i>
-                  Prompt-Driven Auto Repair Technology
-                </h4>
-                <p class="text-gray-600 leading-relaxed">
-                  When the automatically generated Dockerfile fails to build, the system captures the error log as a new prompt input to the LLM, which analyzes the error information and generates a repair solution.
-                </p>
-
-                <div class="bg-gray-50 rounded-lg p-6">
-                  <h5 class="font-semibold text-gray-900 mb-4">Auto Repair Loop</h5>
-                  <div class="space-y-3">
-                    <div class="flex items-center space-x-3">
-                      <i class="fas fa-code text-green-500"></i>
-                      <span class="text-gray-600 text-sm">Generate initial Dockerfile</span>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                      <i class="fas fa-exclamation-circle text-red-500"></i>
-                      <span class="text-gray-600 text-sm">Build fails, capture error</span>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                      <i class="fas fa-brain text-blue-500"></i>
-                      <span class="text-gray-600 text-sm">LLM analyzes error cause</span>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                      <i class="fas fa-check-circle text-green-500"></i>
-                      <span class="text-gray-600 text-sm">Generate repaired version</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Dockerfile Generation Flowchart -->
-            <div class="bg-gray-50 rounded-xl p-8">
-              <h4 class="font-serif text-xl font-semibold text-gray-900 mb-6 text-center">Automated Build Process</h4>
-              <div class="mermaid-container">
-                <div class="mermaid-controls">
-                  <button class="mermaid-control-btn zoom-in" title="Zoom In">
-                    <i class="fas fa-search-plus"></i>
-                  </button>
-                  <button class="mermaid-control-btn zoom-out" title="Zoom Out">
-                    <i class="fas fa-search-minus"></i>
-                  </button>
-                  <button class="mermaid-control-btn reset-zoom" title="Reset">
-                    <i class="fas fa-expand-arrows-alt"></i>
-                  </button>
-                  <button class="mermaid-control-btn fullscreen" title="Fullscreen">
-                    <i class="fas fa-expand"></i>
-                  </button>
-                </div>
-                <div class="mermaid">
-                  flowchart TD
-                  A[&#34;Code Repository&#34;] --&gt; B[&#34;LLM Analysis&#34;]
-                  B --&gt; C[&#34;Identify Language&#34;]
-                  B --&gt; D[&#34;Detect Build System&#34;]
-                  B --&gt; E[&#34;Infer Dependencies&#34;]
-                  C --&gt; F[&#34;Generate Dockerfile&#34;]
-                  D --&gt; F
-                  E --&gt; F
-                  F --&gt; G{&#34;Build Success?&#34;}
-                  G --&gt;|Yes| H[&#34;Output Result&#34;]
-                  G --&gt;|No| I[&#34;Capture Error&#34;]
-                  I --&gt; J[&#34;Error Analysis&#34;]
-                  J --&gt; K[&#34;Repair Dockerfile&#34;]
-                  K --&gt; G
-
-                  style A fill:#1e40af,color:#ffffff,stroke:#1e3a8a,stroke-width:3px
-                  style B fill:#0ea5e9,color:#ffffff,stroke:#0284c7,stroke-width:3px
-                  style F fill:#10b981,color:#ffffff,stroke:#059669,stroke-width:3px
-                  style H fill:#f59e0b,color:#ffffff,stroke:#d97706,stroke-width:3px
-                  style I fill:#ef4444,color:#ffffff,stroke:#dc2626,stroke-width:3px
-                  style J fill:#64748b,color:#ffffff,stroke:#475569,stroke-width:3px
-                  style K fill:#8b5cf6,color:#ffffff,stroke:#7c3aed,stroke-width:3px
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Cross-Language Support -->
-          <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-12">
-            <h3 class="font-serif text-3xl font-semibold text-gray-900 mb-8 text-center">Cross-Language Support and Effects</h3>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div class="space-y-6">
-                <h4 class="font-serif text-xl font-semibold text-gray-900">Support for Multiple Programming Languages</h4>
-                <p class="text-gray-600 leading-relaxed">
-                  The LLM-based solution has good versatility and scalability, benefiting from the model's exposure to large amounts of multi-language code during training, giving it cross-language code understanding capabilities.
-                </p>
-
-                <div class="grid grid-cols-2 gap-4">
-                  <div class="bg-white rounded-lg p-4 text-center">
-                    <i class="fas fa-code text-blue-600 text-2xl mb-2"></i>
-                    <div class="font-semibold text-gray-900">C</div>
-                  </div>
-                  <div class="bg-white rounded-lg p-4 text-center">
-                    <i class="fab fa-java text-red-600 text-2xl mb-2"></i>
-                    <div class="font-semibold text-gray-900">Java</div>
-                  </div>
-                  <div class="bg-white rounded-lg p-4 text-center">
-                    <i class="fas fa-rocket text-cyan-600 text-2xl mb-2"></i>
-                    <div class="font-semibold text-gray-900">Go</div>
-                  </div>
-                  <div class="bg-white rounded-lg p-4 text-center">
-                    <i class="fas fa-gem text-red-500 text-2xl mb-2"></i>
-                    <div class="font-semibold text-gray-900">Ruby</div>
-                  </div>
-                  <div class="bg-white rounded-lg p-4 text-center">
-                    <i class="fab fa-python text-yellow-600 text-2xl mb-2"></i>
-                    <div class="font-semibold text-gray-900">Python</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="bg-white rounded-xl p-8">
-                <h4 class="font-serif text-xl font-semibold text-gray-900 mb-6">Key Outcomes</h4>
-                <div class="space-y-4">
-                  <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                      <i class="fas fa-door-open text-green-600"></i>
-                    </div>
-                    <div>
-                      <h5 class="font-semibold text-gray-900">Lower Barrier to Entry</h5>
-                      <p class="text-gray-600 text-sm">No need to read complex documentation, one-click build</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                      <i class="fas fa-sync text-blue-600"></i>
-                    </div>
-                    <div>
-                      <h5 class="font-semibold text-gray-900">Improved Build Consistency</h5>
-                      <p class="text-gray-600 text-sm">Avoid "works on my machine" problems</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                      <i class="fas fa-users text-purple-600"></i>
-                    </div>
-                    <div>
-                      <h5 class="font-semibold text-gray-900">Promote Collaboration</h5>
-                      <p class="text-gray-600 text-sm">New members get started quickly, projects easy to reproduce</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 5: AI-Powered Software Build: Impact and Outlook -->
-      <section class="py-20 bg-white" id="section-5">
-        <div class="max-w-5xl mx-auto px-8">
-          <header class="mb-16">
-            <h2 class="font-serif text-4xl font-semibold text-gray-900 mb-6">
-              AI-Powered Software Build: Impact and Outlook
-            </h2>
-            <div class="section-divider w-24 mb-8"></div>
-            <p class="font-sans text-xl text-gray-600 leading-relaxed max-w-4xl">
-              The successful application of AI technology in the software build field not only solves long-standing technical problems but also opens up a new paradigm for intelligent R&D, promoting the intelligent transformation of the entire software development process.
-            </p>
-          </header>
-
-          <!-- Improvement in R&D Efficiency -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <div class="bg-green-50 rounded-xl p-8">
-              <h3 class="font-serif text-2xl font-semibold text-gray-900 mb-6">
-                <i class="fas fa-clock text-green-600 mr-3"></i>
-                Reduce Manual Configuration and Debugging Time
-              </h3>
-              <div class="space-y-4">
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Automate Tedious Tasks</h4>
-                  <p class="text-gray-600 text-sm">Leave repetitive work like dependency repair, build acceleration, and environment configuration to AI</p>
-                </div>
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Improve Developer Experience</h4>
-                  <p class="text-gray-600 text-sm">Developers can focus on creative work like business logic design and code optimization</p>
-                </div>
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Accelerate Development Process</h4>
-                  <p class="text-gray-600 text-sm">From hours of configuration debugging to minutes of automated processing</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-blue-50 rounded-xl p-8">
-              <h3 class="font-serif text-2xl font-semibold text-gray-900 mb-6">
-                <i class="fas fa-rocket text-blue-600 mr-3"></i>
-                Improve Software Delivery Speed and Quality
-              </h3>
-              <div class="space-y-4">
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Ensure Build Correctness</h4>
-                  <p class="text-gray-600 text-sm">Automated dependency repair and build script maintenance reduce defects at source</p>
-                </div>
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Accelerate Iteration Cycles</h4>
-                  <p class="text-gray-600 text-sm">More reliable continuous integration and deployment, faster software releases</p>
-                </div>
-                <div class="bg-white rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-900 mb-2">Enhance Product Quality</h4>
-                  <p class="text-gray-600 text-sm">Comprehensive multi-configuration testing, early detection of compatibility issues</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Industry Impact -->
-          <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-12 mb-16">
-            <h3 class="font-serif text-3xl font-semibold text-gray-900 mb-8 text-center">Industry Impact of Intelligent R&D Paradigm</h3>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <div class="space-y-6">
-                <h4 class="font-serif text-xl font-semibold text-gray-900">
-                  <i class="fas fa-cogs text-purple-600 mr-3"></i>
-                  Promote Intelligent Transformation of Software Development Process
-                </h4>
-                <p class="text-gray-600 leading-relaxed">
-                  Starting from solving single-point problems, AI gradually penetrates all aspects of the software development lifecycle, from requirements analysis, design, coding, testing to deployment and operations.
-                </p>
-
-                <div class="bg-white rounded-lg p-6">
-                  <h5 class="font-semibold text-gray-900 mb-3">Full-Process Intelligence</h5>
-                  <div class="grid grid-cols-2 gap-2 text-sm">
-                    <div class="flex items-center space-x-2">
-                      <i class="fas fa-lightbulb text-yellow-500"></i>
-                      <span class="text-gray-600">Requirements Analysis</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                      <i class="fas fa-drafting-compass text-blue-500"></i>
-                      <span class="text-gray-600">Architecture Design</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                      <i class="fas fa-code text-green-500"></i>
-                      <span class="text-gray-600">Code Generation</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                      <i class="fas fa-bug text-red-500"></i>
-                      <span class="text-gray-600">Test Optimization</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="space-y-6">
-                <h4 class="font-serif text-xl font-semibold text-gray-900">
-                  <i class="fas fa-handshake text-indigo-600 mr-3"></i>
-                  Promote Human-Machine Collaborative Development Model
-                </h4>
-                <p class="text-gray-600 leading-relaxed">
-                  AI plays the role of "intelligent assistant", handling tedious and repetitive tasks, while human developers focus on high-level creative work, achieving the combination of human and machine intelligence.
-                </p>
-
-                <div class="bg-white rounded-lg p-6">
-                  <h5 class="font-semibold text-gray-900 mb-3">Collaborative Advantages</h5>
-                  <div class="space-y-2 text-sm">
-                    <div class="flex items-center justify-between">
-                      <span class="text-gray-600">AI Handles</span>
-                      <span class="text-purple-600">Repetitive, compute-intensive tasks</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                      <span class="text-gray-600">Humans Focus</span>
-                      <span class="text-indigo-600">Creative, strategic work</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                      <span class="text-gray-600">Result</span>
-                      <span class="text-green-600">Dual improvement in efficiency and quality</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Research Summary -->
-          <div class="bg-white rounded-2xl p-12 shadow-sm">
-            <h3 class="font-serif text-3xl font-semibold text-gray-900 mb-8 text-center">Research Summary</h3>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-              <div class="text-center">
-                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <i class="fas fa-shield-alt text-blue-600 text-2xl"></i>
-                </div>
-                <h4 class="font-serif text-xl font-semibold text-gray-900 mb-3">Build Effectiveness</h4>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                  Through dynamic modeling and dependency inference, achieve precise error detection; style-matching based auto repair ensures correctness and reliability of build results.
-                </p>
-              </div>
-
-              <div class="text-center">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <i class="fas fa-tachometer-alt text-green-600 text-2xl"></i>
-                </div>
-                <h4 class="font-serif text-xl font-semibold text-gray-900 mb-3">Build Efficiency</h4>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                  Combining incremental builds with intelligent configuration sorting provides efficient acceleration for multi-configuration builds, significantly shortening build time and alleviating build burden of modern software projects.
-                </p>
-              </div>
-
-              <div class="text-center">
-                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <i class="fas fa-magic text-purple-600 text-2xl"></i>
-                </div>
-                <h4 class="font-serif text-xl font-semibold text-gray-900 mb-3">End-to-End Automation</h4>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                  Using large language models to achieve automatic build from source code to runnable environment, automatically generate and repair Dockerfiles, lowering the barrier to entry for open-source projects.
-                </p>
-              </div>
-            </div>
-
-            <div class="mt-12 text-center">
-              <div class="bg-white rounded-xl p-8 inline-block">
-                <p class="font-serif text-xl text-gray-800 italic">
-                  "With continuous technological progress and expanding application scenarios, we have reason to believe that a new era of more intelligent, efficient, and reliable software R&D is coming."
-                </p>
-              </div>
-            </div>
-          </div>
-
-      <!-- Footer -->
-      <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-5xl mx-auto px-8 text-center">
-          <div class="mb-8">
-            <h3 class="font-serif text-2xl font-semibold mb-4">Software Build Practices and Challenges</h3>
-          </div>
-
-          <div class="border-t border-gray-800 pt-8">
-            <p class="text-gray-400 text-sm">
-              2025 AI for Software Engineering Research.
-            </p>
-            <p class="text-gray-400 text-sm">
-               All rights reserved by Lyu Jun.
-            </p>
-          </div>
-        </div>
-      </footer>
-    </main>
-
-    <script>
-        // Initialize Mermaid with enhanced configuration
-        mermaid.initialize({ 
-            startOnLoad: true,
-            theme: 'base',
-            themeVariables: {
-                primaryColor: '#1e40af',
-                primaryTextColor: '#ffffff',
-                primaryBorderColor: '#1e3a8a',
-                lineColor: '#64748b',
-                secondaryColor: '#
+<div class="tag-row">
+<span class="tag">Email: junlyu@nju.edu.cn</span>
+<span class="tag">Nanjing University</span>
+</div>
+</div>
+<a class="btn primary" href="mailto:junlyu@nju.edu.cn">Send Email</a>
+</div>
+</div>
+</section>
+</main>
+<footer>
+    © <span id="year"></span> Jun Lyu · Software Engineering, AI4SE &amp; Research Efficiency.
+    <br/>
+</footer>
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const cards = document.querySelectorAll(".card, .stat, .hero-card, .focus-item, .topic-panel, .chain-item, .pub");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.animate(
+            [
+              { opacity: 0, transform: "translateY(18px)" },
+              { opacity: 1, transform: "translateY(0)" }
+            ],
+            { duration: 520, easing: "cubic-bezier(.2,.7,.2,1)", fill: "both" }
+          );
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .12 });
+
+    cards.forEach(card => observer.observe(card));
+  </script>
+</body>
+</html>
