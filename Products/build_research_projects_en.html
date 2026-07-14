@@ -263,13 +263,20 @@
       position: relative;
       display: flex;
       gap: 18px;
-      align-items: center;
+      align-items: flex-start;
       z-index: 1;
+    }
+
+    .profile-info {
+      flex: 1;
+      min-width: 0;
+      padding-top: 1px;
     }
 
     .avatar {
       width: 92px;
       height: 92px;
+      flex: 0 0 92px;
       border-radius: 28px;
       background:
         linear-gradient(135deg, rgba(36,107,254,.14), rgba(49,184,217,.18)),
@@ -290,9 +297,21 @@
     }
 
     .role {
+      display: grid;
+      gap: 3px;
       color: var(--muted);
-      line-height: 1.55;
-      margin-top: 5px;
+      line-height: 1.45;
+      margin-top: 7px;
+      text-wrap: pretty;
+    }
+
+    .role-line {
+      display: block;
+    }
+
+    .role-line:first-child {
+      color: #50617e;
+      font-weight: 700;
     }
 
     .focus-board {
@@ -871,6 +890,14 @@
       h1 { letter-spacing: -.055em; }
     }
 
+    @media (max-width: 560px) {
+      .profile-top { flex-direction: column; gap: 14px; }
+      .avatar { width: 82px; height: 82px; flex-basis: 82px; border-radius: 24px; }
+      .avatar svg { width: 78px; height: 78px; }
+      .name { font-size: 25px; }
+      .role { font-size: 13px; }
+    }
+
     @media print {
       header, .hero-actions { display: none; }
       body { background: #fff; }
@@ -913,7 +940,7 @@
 </h1>
 <p class="lead">
           My research focuses on
-          <strong>observability, correctness, efficiency, and trustworthy data engineering</strong>in build systems, continuous integration, security analysis, and agent-assisted software development. I work on build dependency errors, incremental build reliability, automatic repair of missing dependencies, and LLM-assisted build environment generation, with the goal of bringing Coding Agents and software analysis techniques into real development workflows.
+          <strong>observability, correctness, efficiency, and trustworthy data engineering</strong> in build systems, continuous integration, security analysis, and agent-assisted software development. I work on build dependency errors, incremental build reliability, automatic repair of missing dependencies, and LLM-assisted build environment generation, with the goal of bringing Coding Agents and software analysis techniques into real development workflows.
         </p>
 <div class="hero-actions">
 <a class="btn primary" href="#research">Explore Research</a>
@@ -947,12 +974,13 @@
 <path d="M32 88h56" opacity=".72" stroke="white" stroke-linecap="round" stroke-width="5"></path>
 </svg>
 </div>
-<div>
+<div class="profile-info">
 <div class="name">Jun Lyu</div>
 <div class="role">
-              Assistant Researcher, Software Institute, Nanjing University / State Key Laboratory for Novel Software Technology<br/>
-              DevOps Lab
-            </div>
+<span class="role-line">Assistant Researcher</span>
+<span class="role-line">Software Institute, Nanjing University</span>
+<span class="role-line">State Key Laboratory for Novel Software Technology · DevOps Lab</span>
+</div>
 </div>
 </div>
 <div class="focus-board">
