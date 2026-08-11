@@ -1,9 +1,10 @@
 # 💻 Selected Research Papers
 
 My full paper list is shown at [google scholar](https://scholar.google.com/citations?user=ZkRL7gIAAAAJ&hl).
+
 <sub>&#42; Corresponding author.</sub>
 
-- ``ASE 2026`` Beyond Syntactic Differencing: Semantic-Aware Scheduling for Cross-Configuration Incremental，Xiaolong Dai，Shanshan Li，**Jun Lyu**<sup>&#42;</sup>，Xintao Niu.
+- ``ASE 2026`` Beyond Syntactic Differencing: Semantic-Aware Scheduling for Cross-Configuration Incremental，Xiaolong Dai，Shanshan Li，**Jun Lyu** <sup>&#42;</sup>，Xintao Niu.
 - ``TSE`` Towards Robust Detection for Malicious Injection Variants, Yanjing Yang, Bohan Liu, He Zhang, Jinwei Xu, Xin Zhou, **Jun Lyu**, Zhewen Mao, Dongxue Pan.
 - ``ICSE 2026`` Automatic Dockerfile Generation with Large Language Models, **Jun Lyu**, He Zhang, Yusong Yuan, Lanxin Yang, Yue Li, Manuel Rigger.
 - ``ASE 2025`` Automatic Fixing of Missing Dependency Errors, **Jun Lyu**, He Zhang, Lanxin Yang, Yue Li, Chenxing Zhong, Manuel Rigger.
