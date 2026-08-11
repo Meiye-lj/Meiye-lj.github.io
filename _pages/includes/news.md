@@ -1,5 +1,6 @@
 # 🔥 News
 
+- *2026.07*: &nbsp;🎉🎉 Our paper "Beyond Syntactic Differencing: Semantic-Aware Scheduling for Cross-Configuration Incremental Builds" was accepted by ASE 2026!
 - *2026.01*: &nbsp;🎉🎉 Our paper "Towards Robust Detection for Malicious Injection Variants" was accepted by TSE!
 - *2025.10*: &nbsp;🎉🎉 Our paper "Automatic Dockerfile Generation with Large Language Models" was accepted by ICSE 2026!
 - *2025.09*: &nbsp;🎉🎉 Our paper "Automatic Fixing of Missing Dependency Errors" was accepted by ASE 2025!
