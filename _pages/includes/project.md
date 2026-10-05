@@ -1,6 +1,6 @@
 # 🚀 Research Projects
 Below are several ongoing and completed research projects.  
-[**Explore all research projects →**]({{ '/Products/build_research_projects_en.html' | relative_url }})
+[**Explore all research projects**]({{ '/Products/build_research_projects_en.html' | relative_url }})
 
 ## Ongoing Projects
 
