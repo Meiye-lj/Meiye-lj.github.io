@@ -4,8 +4,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Jun Lyu | Software Engineering and Intelligent Software Development Research</title>
-<meta content="Software R&amp;D efficiency, build systems, software security, AI4SE, and LLM agents." name="description"/>
+<title>Jun Lyu | Trustworthy Autonomous Software R&amp;D and Build Systems Research</title>
+<meta content="Trustworthy and efficient autonomous software R&amp;D, build systems, software security, AI4SE, and LLM agents." name="description"/>
 <style>
     :root {
       --bg: #f6f8fb;
@@ -872,11 +872,153 @@
     .pub h3 { line-height: 1.35; }
     .paper-group-title { letter-spacing: .04em; }
 
+
+    /* Current problem and featured project */
+    .problem-shell {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .problem-banner {
+      border-radius: 30px;
+      padding: 30px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 85% 10%, rgba(255,255,255,.24), transparent 28%),
+        linear-gradient(135deg, #172033 0%, #214c9b 52%, #246bfe 100%);
+      box-shadow: 0 24px 60px rgba(25,42,77,.20);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .problem-banner .kicker { color: #7de0ff; }
+    .problem-banner h2 { color: #fff; max-width: 760px; }
+    .problem-question {
+      margin: 20px 0 0;
+      font-size: clamp(20px, 2.4vw, 29px);
+      line-height: 1.45;
+      font-weight: 800;
+      letter-spacing: -.025em;
+      max-width: 840px;
+    }
+    .problem-note {
+      margin-top: 20px;
+      padding: 16px 18px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      border-radius: 18px;
+      color: rgba(255,255,255,.80);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .agenda-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .agenda-step {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      min-height: 150px;
+    }
+    .agenda-step .num {
+      display: inline-grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #2450a6;
+      background: linear-gradient(135deg, rgba(36,107,254,.12), rgba(49,184,217,.18));
+    }
+    .agenda-step h3 { margin: 0 0 8px; font-size: 17px; }
+    .agenda-step p { margin: 0; color: var(--muted); line-height: 1.62; font-size: 14px; }
+
+    .project-feature {
+      display: grid;
+      grid-template-columns: .78fr 1.22fr;
+      gap: 18px;
+      padding: 0;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .project-feature-side {
+      padding: 28px;
+      color: #fff;
+      background: linear-gradient(160deg, #172033, #244f9f 62%, #31b8d9);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 330px;
+    }
+    .project-feature-side .badge-line {
+      display: inline-flex;
+      width: fit-content;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      color: rgba(255,255,255,.88);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .project-feature-side h3 {
+      margin: 18px 0 10px;
+      font-size: 29px;
+      line-height: 1.22;
+      letter-spacing: -.045em;
+    }
+    .project-feature-side p { color: rgba(255,255,255,.78); line-height: 1.7; }
+    .project-feature-main { padding: 26px 28px; }
+    .project-feature-main > p { color: var(--muted); line-height: 1.72; margin: 0 0 18px; }
+    .level-grid { display: grid; gap: 10px; }
+    .level-item {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px 15px;
+      border-radius: 18px;
+      background: rgba(246,248,251,.82);
+      border: 1px solid var(--line);
+    }
+    .level-item strong:first-child {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      color: var(--primary);
+      background: rgba(36,107,254,.10);
+    }
+    .level-item h4 { margin: 1px 0 5px; font-size: 15px; }
+    .level-item p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 13px; }
+
+    .subsection-label {
+      margin: 24px 0 14px;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+
     @media (max-width: 980px) {
       .hero { grid-template-columns: 1fr; padding-top: 52px; }
       .hero-card { min-height: unset; }
-      .grid-3, .grid-2, .research-map, .metric-strip, .topic-hero, .topic-metrics { grid-template-columns: 1fr; }
+      .grid-3, .grid-2, .research-map, .metric-strip, .topic-hero, .topic-metrics, .problem-shell, .project-feature { grid-template-columns: 1fr; }
       .center-node { min-height: 220px; }
+      .project-feature-side { min-height: unset; }
       .stats { grid-template-columns: repeat(2, 1fr); }
       .section-head { align-items: start; flex-direction: column; }
     }
@@ -884,7 +1026,7 @@
     @media (max-width: 720px) {
       .links { display: none; }
       .page, .nav { width: min(100% - 28px, var(--max)); }
-      .stats { grid-template-columns: 1fr; }
+      .stats, .agenda-grid { grid-template-columns: 1fr; }
       .pub { grid-template-columns: 1fr; }
       .venue { place-items: start; text-align: left; }
       h1 { letter-spacing: -.055em; }
@@ -904,7 +1046,137 @@
       .card, .hero-card, .contact, .stat { box-shadow: none; }
       .section { break-inside: avoid; }
     }
-  </style>
+  
+
+    /* Current-work focused homepage */
+    .current-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    .current-card {
+      position: relative;
+      padding: 24px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.80);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+    .current-card::after {
+      content: "";
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      right: -55px;
+      bottom: -75px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(36,107,254,.11), transparent 68%);
+    }
+    .current-card > * { position: relative; z-index: 1; }
+    .current-card.primary-current {
+      background: linear-gradient(145deg, rgba(36,107,254,.96), rgba(49,184,217,.91));
+      color: #fff;
+      border-color: transparent;
+    }
+    .current-card.primary-current p { color: rgba(255,255,255,.82); }
+    .current-card.primary-current .current-index,
+    .current-card.primary-current .current-status,
+    .current-card.primary-current .tag {
+      color: rgba(255,255,255,.92);
+      border-color: rgba(255,255,255,.18);
+      background: rgba(255,255,255,.11);
+    }
+    .current-index {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 13px;
+      color: var(--primary);
+      background: rgba(36,107,254,.10);
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+    .current-status {
+      display: inline-flex;
+      margin-left: 8px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(36,107,254,.14);
+      background: rgba(36,107,254,.06);
+      color: #2450a6;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      vertical-align: top;
+      margin-top: 4px;
+    }
+    .current-card h3 { margin: 0 0 11px; font-size: 21px; line-height: 1.3; letter-spacing: -.03em; }
+    .current-card p { margin: 0; color: var(--muted); line-height: 1.72; font-size: 14px; }
+    .foundation-strip {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 20px;
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 18px;
+      align-items: start;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.65);
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+    .foundation-label {
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .foundation-strip strong { color: var(--text); }
+    .completed-grid {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 18px;
+    }
+    .completed-card h3 { margin-top: 8px; }
+    .project-status {
+      display: inline-flex;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(32,164,107,.09);
+      color: #17764f;
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .completed-outcomes {
+      display: grid;
+      gap: 8px;
+      margin-top: 16px;
+      color: #40516e;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .completed-outcomes span {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(246,248,251,.84);
+      border: 1px solid var(--line);
+    }
+
+    @media (max-width: 980px) {
+      .current-grid, .completed-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .foundation-strip { grid-template-columns: 1fr; gap: 8px; }
+    }
+</style>
 </head>
 <body>
 <div class="noise"></div>
@@ -919,15 +1191,7 @@
 </span>
 <span>Jun Lyu · Research Profile</span>
 </a>
-<div class="links">
-<a href="#about">About</a>
-<a href="#research">Research</a>
-<a href="#projects">Projects</a>
-<a href="#build-errors">Build Dependencies</a>
-<a href="#publications">Publications</a>
-<a href="#students">Students</a>
-<a href="#contact">Contact</a>
-</div>
+<div class="links"><a href="#about">About</a><a href="#current-problem">Current Problem</a><a href="#research">Research</a><a href="#projects">Projects</a><a href="#contact">Contact</a></div>
 </nav>
 </header>
 <main class="page" id="top">
@@ -938,28 +1202,9 @@
           Intelligent Software Engineering<br/>
 <span class="gradient-text">for Real Development Workflows</span>
 </h1>
-<p class="lead">
-          My research focuses on
-          <strong>observability, correctness, efficiency, and trustworthy data engineering</strong> in build systems, continuous integration, security analysis, and agent-assisted software development. I work on build dependency errors, incremental build reliability, automatic repair of missing dependencies, and LLM-assisted build environment generation, with the goal of bringing Coding Agents and software analysis techniques into real development workflows.
-        </p>
-<div class="hero-actions">
-<a class="btn primary" href="#research">Explore Research</a>
-<a class="btn" href="#students">Students &amp; Collaboration</a>
-</div>
-<div aria-label="Research overview" class="stats">
-<div class="stat">
-<strong>Build</strong>
-<span>Build ordering, build dependency error detection, and missing dependency repair</span>
-</div>
-<div class="stat">
-<strong>AI4SE</strong>
-<span>LLM-assisted software engineering, Agentic Coding, and code intelligence</span>
-</div>
-<div class="stat">
-<strong>LLM SCA</strong>
-<span>Software composition analysis, LLM application risk paths, and vulnerability reachability</span>
-</div>
-</div>
+<p class="lead">My current research focuses on <strong>trustworthy and efficient autonomous software R&amp;D</strong>, including evidence-grounded agent execution, systematic build acceleration, CI/CD configuration intelligence, and security analysis for LLM applications. Earlier work on build dependency reliability provides the technical foundation for these ongoing directions.</p>
+<div class="hero-actions"><a class="btn primary" href="#current-problem">Current Research Problem</a><a class="btn" href="#projects">Research Projects</a></div>
+<div aria-label="Research overview" class="stats"><div class="stat"><strong>Autonomous R&amp;D</strong><span>Trustworthy execution, evidence-grounded completion, recovery, and dynamic human–agent control</span></div><div class="stat"><strong>Build Acceleration</strong><span>Cross-configuration reuse, waiting loss, critical paths, and attainable acceleration limits</span></div><div class="stat"><strong>Software Trust</strong><span>CI/CD configuration intelligence, LLM application SCA, vulnerability reachability, and secure execution</span></div></div>
 </div>
 <aside aria-label="Profile card" class="hero-card" id="about">
 <div class="profile-top">
@@ -1015,393 +1260,177 @@
 </div>
 </aside>
 </section>
+<section class="section" id="current-problem">
+<div class="problem-shell">
+<div class="problem-banner">
+<div class="kicker">Current Research Problem</div>
+<h2>Trustworthy Execution of Autonomous Software R&amp;D</h2>
+<p class="problem-question">When an autonomous development agent says “done”, what evidence justifies trusting the execution—and how can that execution remain efficient, recoverable, and under appropriate human control?</p>
+<div class="problem-note">
+  The goal is not to directly prove end-to-end software correctness. Instead, I focus on whether the execution process is supported by fresh, scoped, and traceable evidence: whether the observed behavior is valid, whether a completion claim is justified by that evidence, how much of the change has actually been verified, and how the system should react when evidence is incomplete or contradictory.
+</div>
+</div>
+<div class="agenda-grid">
+<div class="agenda-step">
+<span class="num">01</span>
+<h3>Unified Modeling of Task–Behavior–State–Evidence</h3>
+<p>Represent what the agent is asked to do, what it actually does, how the software state changes, and which observable evidence supports each claim.</p>
+</div>
+<div class="agenda-step">
+<span class="num">02</span>
+<h3>Efficient Autonomous Execution under Trust Constraints</h3>
+<p>Reduce feedback latency, redundant validation, rework, and search cost while preserving evidence freshness, scope, and correctness constraints.</p>
+</div>
+<div class="agenda-step">
+<span class="num">03</span>
+<h3>Failure Diagnosis, Attribution, and Recovery</h3>
+<p>Identify why an autonomous task failed, distinguish environment/tool/model causes, and select repair, rollback, retry, or re-planning actions with verifiable outcomes.</p>
+</div>
+<div class="agenda-step">
+<span class="num">04</span>
+<h3>Human-in-the-Loop Dynamic Autonomy</h3>
+<p>Adapt the level of autonomy to uncertainty and risk, escalating to humans when evidence is insufficient and returning control to agents when the state becomes verifiable.</p>
+</div>
+</div>
+</div>
+</section>
 <section class="section" id="research">
 <div class="section-head">
 <div>
-<div class="kicker">Research Agenda</div>
-<h2>From “generating code” to “participating in software engineering”</h2>
+<div class="kicker">Research Agenda · Ongoing Work</div>
+<h2>What I Am Working on Now</h2>
 </div>
 <p class="section-desc">
-          Intelligence in software engineering is not merely about calling large language models. It requires integrating models, tools, context, execution environments, and quality validation into real development workflows.
-        </p>
+      My current agenda connects autonomous software engineering with trustworthy execution, system efficiency, configuration intelligence, and software supply-chain security. The emphasis is on research questions that are active now rather than a chronological summary of past work.
+    </p>
 </div>
-<div class="research-map card">
-<div class="map-col">
-<div class="map-box">
-<strong>Build Dependency Errors and Incremental Build Reliability</strong>
-<span>I study detection, explanation, and repair methods for incomplete dependency declarations, mismatches between build execution and declarations, and error propagation caused by configuration switches in incremental builds.</span>
+<div class="current-grid">
+<article class="current-card primary-current">
+<div class="current-index">01</div>
+<div class="current-status">Core agenda</div>
+<h3>Trustworthy Execution of Autonomous Software R&amp;D</h3>
+<p>Study when an autonomous development process can be trusted to have completed a task: how task intent, agent behavior, software state, and execution evidence should be connected; how failures should be attributed and recovered; and when control should move between agents and humans.</p>
+<div class="tag-row">
+<span class="tag">Execution Evidence</span><span class="tag">Agent Failure</span><span class="tag">Recovery</span><span class="tag">Human-in-the-Loop</span>
 </div>
-<div class="map-box">
-<strong>Build Ordering and Build Efficiency</strong>
-<span>For multi-configuration incremental builds, I characterize reuse boundaries and ordering sensitivity across configurations and explore ordering strategies that improve efficiency under correctness constraints.</span>
+</article>
+<article class="current-card">
+<div class="current-index">02</div>
+<div class="current-status">NSFC-funded</div>
+<h3>Systematic Acceleration of Complex Software Builds</h3>
+<p>Move beyond isolated optimization tricks and explain build time systematically across cross-configuration reuse, waiting loss within a single build, and structural critical paths, with the goal of identifying both actionable optimization opportunities and attainable speedup limits.</p>
+<div class="tag-row">
+<span class="tag">Reuse Boundary</span><span class="tag">Waiting Loss</span><span class="tag">Critical Path</span><span class="tag">Acceleration Limit</span>
 </div>
-<div class="map-box">
-<strong>Build Environment Generation and Reproducible Builds</strong>
-<span>For Docker, Make, and C/C++ projects, I explore automated build environment generation, artifact consistency validation, and software supply-chain risk control.</span>
+</article>
+<article class="current-card">
+<div class="current-index">03</div>
+<div class="current-status">Ongoing</div>
+<h3>CI/CD Configuration Intelligence and Conformance</h3>
+<p>Study how CI/CD configurations encode engineering intent, anti-patterns, and best practices; how configuration behavior can be modeled and checked for conformance; and how configuration generation or repair can be validated against executable evidence.</p>
+<div class="tag-row">
+<span class="tag">CI/CD</span><span class="tag">Configuration</span><span class="tag">Conformance</span><span class="tag">Generation &amp; Repair</span>
 </div>
+</article>
+<article class="current-card">
+<div class="current-index">04</div>
+<div class="current-status">Ongoing</div>
+<h3>Security and Composition Analysis for LLM Applications</h3>
+<p>Identify the components and capability paths that actually participate in LLM-enabled applications, connect declared dependencies with code-visible and configuration-mediated usage, and reason about whether vulnerable components are reachable on security-relevant capability paths.</p>
+<div class="tag-row">
+<span class="tag">LLM SCA</span><span class="tag">Capability Path</span><span class="tag">Vulnerability Reachability</span><span class="tag">Architecture Mining</span>
 </div>
-<div class="center-node">
+</article>
+</div>
+<div class="foundation-strip">
+<div class="foundation-label">Research foundation</div>
 <div>
-<strong>Trustworthy Software<br/>R&amp;D Efficiency and Agentic Engineering</strong>
-<span>
-              Using real repositories, real toolchains, and real industrial processes as research objects, I study integrated methods that connect data, models, tools, and validation.
-            </span>
-</div>
-</div>
-<div class="map-col">
-<div class="map-box">
-<strong>LLM Application Architecture and SCA</strong>
-<span>I identify LLM call sites, capability paths, external components, and vulnerability propagation relations to enable software composition analysis for LLM applications.</span>
-</div>
-<div class="map-box">
-<strong>Agentic Coding Data Engineering</strong>
-<span>I construct high-quality task libraries, trajectory libraries, validation rules, and automated judging sandboxes to support enterprise Coding Agent training and evaluation.</span>
-</div>
-<div class="map-box">
-<strong>LLM-Assisted Software Analysis</strong>
-<span>For bug localization, vulnerability detection, code repair, and build diagnosis, I explore knowledge enhancement, context organization, and trustworthy validation.</span>
-</div>
-</div>
+<strong>Build dependency reliability and automated repair.</strong>
+      Earlier work on incremental-build dependency errors, execution–declaration consistency, automatic dependency repair, and build-environment generation established the evidence-driven analysis methodology that now supports the broader agenda above. Details are summarized under Completed Projects.
+    </div>
 </div>
 </section>
-<section class="section" id="build-errors">
-<div class="section-head">
-<div>
-<div class="kicker">Build Dependency Research</div>
-<h2>Build Dependency Errors: From Incremental Build Reliability to Automated Repair</h2>
-</div>
-<p class="section-desc">
-          This is my most continuous research thread: starting from why incremental builds go wrong, I further study how to detect, explain, and repair such errors, and how to generate reliable build environments.
-        </p>
-</div>
-<div class="topic-hero">
-<div class="topic-panel">
-<h3>Core Problem: Build systems do more than “run commands”</h3>
-<p>
-            Modern build systems rely on scripts, declarative files, toolchains, system environments, and historical build states. When dependency declarations are missing, build execution diverges from declarations, configuration-switching orders are inappropriate, or environmental dependencies are incomplete, incremental builds may produce stale artifacts, incorrect binaries, or non-reproducible results. Therefore, build research is not only about acceleration; it also involves correctness boundaries, dependency evidence, error localization, and automated repair.
-          </p>
-<div class="topic-metrics">
-<div class="topic-metric">
-<strong>ISSTA'24</strong>
-<span>Incremental build dependency error detection</span>
-</div>
-<div class="topic-metric">
-<strong>TSE'25</strong>
-<span>Dynamic execution–declaration consistency analysis</span>
-</div>
-<div class="topic-metric">
-<strong>ASE'25</strong>
-<span>Automatic repair of missing dependency errors</span>
-</div>
-</div>
-</div>
-<div class="card research-chain">
-<div class="chain-item">
-<div class="chain-index">01</div>
-<div>
-<h3>Multi-configuration incremental build ordering</h3>
-<p>I study build reuse relations and ordering sensitivity across configurations, and explore how to schedule configuration builds to reduce redundant work while preserving correctness.</p>
-</div>
-</div>
-<div class="chain-item">
-<div class="chain-index">02</div>
-<div>
-<h3>Incremental build dependency error detection</h3>
-<p>For hidden missing dependencies in incremental builds, I identify which file, command, or artifact relations are not correctly modeled by the build system.</p>
-</div>
-</div>
-<div class="chain-item">
-<div class="chain-index">03</div>
-<div>
-<h3>Consistency Analysis between Build Execution and Dependency Declarations</h3>
-<p>By dynamically analyzing build execution behavior and comparing it with build declarations, I detect incomplete declarations, over-declarations, and execution-declaration dependency deviations.</p>
-</div>
-</div>
-<div class="chain-item">
-<div class="chain-index">04</div>
-<div>
-<h3>Automatic repair of missing dependency errors</h3>
-<p>I move from detection to repair by combining error logs, project structure, package-management knowledge, and validation feedback to generate deployable dependency repair solutions.</p>
-</div>
-</div>
-<div class="chain-item">
-<div class="chain-index">05</div>
-<div>
-<h3>LLM-Assisted Build Environment Generation</h3>
-<p>For Dockerfile generation and build environment reproduction, I combine build knowledge, repository context, and execution validation to improve automation in environment configuration.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
+
 <section class="section" id="projects">
 <div class="section-head">
 <div>
-<div class="kicker">Projects &amp; Methodology</div>
-<h2>Major Research Projects and Technical Roadmap</h2>
+<div class="kicker">Research Projects</div>
+<h2>Funded and Completed Projects</h2>
 </div>
 <p class="section-desc">
-          My research starts from real software repositories and engineering workflows, with automated observation, verifiable experiments, and tool prototypes as core deliverables.
-        </p>
+      The project portfolio separates work that is actively funded and being developed now from research threads whose main technical objectives have already been completed.
+    </p>
 </div>
-<div class="grid-3">
-<article class="card">
-<h3>Build Dependency Error Detection and Repair</h3>
-<p>
-            I study missing dependencies in incremental builds, inconsistencies between build execution and declarations, and missing system/library dependencies, forming a continuous research chain from detection and explanation to automated repair.
-          </p>
+<div class="subsection-label">Active Funded Project</div>
+<article class="card project-feature">
+<div class="project-feature-side">
+<div>
+<span class="badge-line">NSFC Young Scientists Fund</span>
+<h3>Systematic Acceleration of Complex Software Builds</h3>
+<p>复杂软件构建的系统加速研究</p>
+</div>
 <div class="tag-row">
+<span class="tag">Build Systems</span>
+<span class="tag">Performance</span>
 <span class="tag">Incremental Build</span>
-<span class="tag">Dependency Error</span>
-<span class="tag">Dynamic Analysis</span>
-<span class="tag">Auto Repair</span>
+</div>
+</div>
+<div class="project-feature-main">
+<p>
+        This project studies build acceleration as a system-level problem rather than a single optimization technique. It establishes a unified observation framework for repeated builds and asks where time is fundamentally lost, which losses can be removed, and what performance ceiling remains after optimization.
+      </p>
+<div class="level-grid">
+<div class="level-item">
+<strong>L1</strong>
+<div><h4>Cross-configuration reuse and ordering</h4><p>Model reuse boundaries, rebuild closures, and ordering sensitivity across configurations to reduce redundant work while preserving correctness.</p></div>
+</div>
+<div class="level-item">
+<strong>L2</strong>
+<div><h4>Waiting loss and parallelism within one build</h4><p>Quantify scheduling stalls, idle intervals, resource contention, and unrealized parallelism to explain avoidable latency in a single build.</p></div>
+</div>
+<div class="level-item">
+<strong>L3</strong>
+<div><h4>Critical paths, long chains, and acceleration limits</h4><p>Identify structural long chains in the build DAG and estimate the reachable speedup ceiling after removable waiting and redundant work are eliminated.</p></div>
+</div>
+</div>
 </div>
 </article>
-<article class="card">
-<h3>Systematic Build Acceleration</h3>
-<p>
-            I analyze build time from three levels—multi-configuration builds, single builds, and critical paths—characterizing rebuild closures, waiting losses, long-chain phases, and attainable acceleration upper bounds.
-          </p>
-<div class="tag-row">
-<span class="tag">Build DAG</span>
-<span class="tag">Critical Path</span>
-<span class="tag">Reuse Boundary</span>
-<span class="tag">Ninja / Make</span>
+<div class="subsection-label">Completed Projects</div>
+<div class="completed-grid">
+<article class="card completed-card">
+<div class="project-status">Completed research thread · 2024–2025</div>
+<h3>Build Dependency Reliability: Detection, Analysis, and Repair</h3>
+<p>This research thread studied why incremental builds become unreliable when dependencies are missing or inconsistent, and developed a progression from detecting hidden dependency errors to comparing execution behavior against declarations and automatically repairing missing dependencies.</p>
+<div class="completed-outcomes">
+<span><strong>FSE'24</strong> — efficient ordering for multi-configuration incremental builds</span>
+<span><strong>ISSTA'24</strong> — build dependency error detection in incremental builds</span>
+<span><strong>TSE'25</strong> — dynamic execution–declaration consistency analysis</span>
+<span><strong>ASE'25</strong> — automatic fixing of missing dependency errors</span>
 </div>
+<div class="tag-row"><span class="tag">Incremental Build</span><span class="tag">Dependency Error</span><span class="tag">Dynamic Analysis</span><span class="tag">Auto Repair</span></div>
 </article>
-<article class="card">
-<h3>Software Composition Analysis for LLM Applications</h3>
-<p>
-            Through call chains and capability paths, I identify real dependency components in LLM applications and analyze the gaps among declared dependencies, actual usage, configuration-mediated usage, and vulnerability reachability.
-          </p>
-<div class="tag-row">
-<span class="tag">SCA</span>
-<span class="tag">Capability Path</span>
-<span class="tag">Vulnerability</span>
-<span class="tag">Architecture Mining</span>
+<article class="card completed-card">
+<div class="project-status">Completed project · 2026</div>
+<h3>LLM-Assisted Build Environment Generation</h3>
+<p>This work investigated how repository context, build knowledge, large language models, and execution feedback can be combined to generate executable build environments, with Dockerfile generation as the main setting.</p>
+<div class="completed-outcomes">
+<span><strong>ICSE'26</strong> — automatic Dockerfile generation with large language models</span>
+<span><strong>Outcome</strong> — repository-to-environment generation with execution-based validation</span>
 </div>
-</article>
-</div>
-<div class="grid-2" style="margin-top:18px">
-<article class="card">
-<h3>High-Quality Training Data Construction for Agentic Coding</h3>
-<p>
-            This project focuses on real tasks such as environment configuration, dependency repair, and build failure diagnosis. It records process behaviors including task planning, command execution, tool invocation, error recovery, rollback, and retry, and safeguards data quality through automated solvability checks, build/test validation, and risk filtering.
-          </p>
-<div class="tag-row">
-<span class="tag">Task Library</span>
-<span class="tag">Trajectory Library</span>
-<span class="tag">Sandbox</span>
-<span class="tag">Quality Report</span>
-</div>
-</article>
-<article class="card">
-<h3>LLM-Assisted Software Security and Quality Assurance</h3>
-<p>
-            By combining static analysis, dynamic execution evidence, vulnerability knowledge, and LLM reasoning, I study vulnerability detection, malicious injection variant detection, bug localization, and code repair.
-          </p>
-<div class="tag-row">
-<span class="tag">Software Security</span>
-<span class="tag">Vulnerability Detection</span>
-<span class="tag">Bug Localization</span>
-<span class="tag">LLM Prompting</span>
-</div>
+<div class="tag-row"><span class="tag">Dockerfile</span><span class="tag">LLM</span><span class="tag">Build Environment</span><span class="tag">Execution Validation</span></div>
 </article>
 </div>
 </section>
-<section class="section">
-<div class="section-head">
-<div>
-<div class="kicker">How I Work</div>
-<h2>Research Methodology: From Engineering Phenomena to Verifiable Tools</h2>
-</div>
-</div>
-<div class="grid-2">
-<div class="card">
-<div class="timeline">
-<div class="tl-item">
-<div class="dot">2</div>
-<div class="tl-body">
-<h3>Multi-Source Evidence Extraction</h3>
-<p>I integrate code, configuration, dependency declarations, build logs, test results, tool invocation traces, and repository history into traceable evidence chains.</p>
-</div>
-</div>
-<div class="tl-item">
-<div class="dot">3</div>
-<div class="tl-body">
-<h3>Automated Analysis and Generation</h3>
-<p>I combine program analysis, rule systems, knowledge graphs, and LLMs to support localization, diagnosis, repair, scheduling, and data generation.</p>
-</div>
-</div>
-<div class="tl-item">
-<div class="dot">4</div>
-<div class="tl-body">
-<h3>Experimental Validation and Scenario Feedback</h3>
-<p>I evaluate correctness, stability, efficiency, and deployability through benchmarks, sandboxes, real-repository reproduction, and industrial scenario trials.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h3>Typical Deliverables</h3>
-<p>
-            Rather than stopping at conceptual contributions, I emphasize engineering-verifiable outcomes: data specifications, task libraries, trajectory libraries, validation tools, prototype systems, experimental reports, and industrial scenario validation.
-          </p>
-<div class="metric-strip">
-<div class="mini-metric"><strong>01</strong><span>Data Specification</span></div>
-<div class="mini-metric"><strong>02</strong><span>Task Library</span></div>
-<div class="mini-metric"><strong>03</strong><span>Trajectory Library</span></div>
-<div class="mini-metric"><strong>04</strong><span>Validation Tools</span></div>
-<div class="mini-metric"><strong>05</strong><span>Quality Report</span></div>
-</div>
-</div>
-</div>
-</section>
-<section class="section" id="publications">
-<div class="section-head">
-<div>
-<div class="kicker">Selected Publications</div>
-<h2>Selected Publications</h2>
-</div>
-</div>
-<div class="card pub-list">
-<div class="paper-group-title">First-author papers <span>Main thread: build systems, build dependency errors, and build environment generation</span></div>
-<div class="pub first-author">
-<div class="venue hot">PACMSE<br/>FSE 2024</div>
-<div>
-<h3>Towards Efficient Build Ordering for Incremental Builds with Multiple Configurations <span class="badge">First Author</span></h3>
-<span class="authors">Lyu J, Li S, Zhang H, et al.</span>
-<p>This work studies ordering sensitivity and reuse opportunities in multi-configuration incremental builds, and explores ordering methods for improving build efficiency in multi-configuration settings.</p>
-<span class="bib">Proceedings of the ACM on Software Engineering, 2024, 1(FSE): 1494–1517.</span>
-</div>
-</div>
-<div class="pub first-author">
-<div class="venue hot">ISSTA<br/>2024</div>
-<div>
-<h3>Detecting Build Dependency Errors in Incremental Builds <span class="badge">First Author</span></h3>
-<span class="authors">Lyu J, Li S, Zhang H, et al.</span>
-<p>This work targets errors caused by missing or incomplete dependency declarations in incremental builds, and proposes automated detection methods for uncovering hidden build dependency problems.</p>
-<span class="bib">Proceedings of the 33rd ACM SIGSOFT International Symposium on Software Testing and Analysis, 2024: 1–12.</span>
-</div>
-</div>
-<div class="pub first-author">
-<div class="venue hot">TSE<br/>2025</div>
-<div>
-<h3>Detecting Build Dependency Errors by Dynamic Analysis of Build Execution against Declaration <span class="badge">First Author</span></h3>
-<span class="authors">Lyu J, Li S, Liu B, et al.</span>
-<p>This work dynamically analyzes build execution behavior and compares it against dependency declarations to identify inconsistencies between execution dependencies and declared dependencies.</p>
-<span class="bib">IEEE Transactions on Software Engineering, 2025.</span>
-</div>
-</div>
-<div class="pub first-author">
-<div class="venue hot">ASE<br/>2025</div>
-<div>
-<h3>Automatic Fixing of Missing Dependency Errors <span class="badge">First Author</span></h3>
-<span class="authors">Lyu J, Zhang H, Yang L, et al.</span>
-<p>This work advances from dependency error detection to automated repair by combining error evidence, dependency knowledge, and validation feedback to generate deployable fixes.</p>
-<span class="bib">2025 40th IEEE/ACM International Conference on Automated Software Engineering, IEEE, 2025: 597–609.</span>
-</div>
-</div>
-<div class="pub first-author">
-<div class="venue hot">ICSE<br/>2026</div>
-<div>
-<h3>Automatic Dockerfile Generation with Large Language Models <span class="badge">First Author</span></h3>
-<span class="authors">Lyu J, Zhang H, et al.</span>
-<p>This work studies LLM-based Dockerfile generation and software build automation, focusing on generation and validation from repository context to executable build environments.</p>
-<span class="bib">Proceedings of the 48th IEEE/ACM International Conference on Software Engineering, 2026.</span>
-</div>
-</div>
-<div class="paper-group-title">Selected co-authored papers <span>Software R&amp;D efficiency, code review, blockchain software engineering, AI4SE, and software security</span></div>
-<div class="pub">
-<div class="venue">ASE<br/>2024</div>
-<div>
-<h3>An Explainable Automated Model for Measuring Software Engineer Contribution</h3>
-<span class="authors">Li Y, Zhang H, Jin Y, Ren Z, Dong L, Lyu J, et al.</span>
-<p>This work studies explainable automated models for measuring software engineer contribution, supporting R&amp;D efficiency assessment and engineering management decisions.</p>
-<span class="bib">Proceedings of the 39th IEEE/ACM International Conference on Automated Software Engineering, 2024: 783–794.</span>
-</div>
-</div>
-<div class="pub">
-<div class="venue">ASE<br/>2024</div>
-<div>
-<h3>GPP: A Graph-Powered Prioritizer for Code Review Requests</h3>
-<span class="authors">Yang L, Xu J, Zhang H, Wu F, Lyu J, et al.</span>
-<p>This work uses graph-based modeling to prioritize code review requests, improving review resource allocation and engineering collaboration efficiency.</p>
-<span class="bib">Proceedings of the 39th IEEE/ACM International Conference on Automated Software Engineering, 2024: 104–116.</span>
-</div>
-</div>
-<div class="pub">
-<div class="venue">TSE<br/>2025</div>
-<div>
-<h3>Decision Support for Selecting Blockchain-Based Application Design Patterns with Layered Taxonomy and Quality Attributes</h3>
-<span class="authors">Wang Y, Huang Y, Li J, Li S, Zhang H, Lyu J, et al.</span>
-<p>This work constructs a layered taxonomy and quality-attribute-driven decision support method for selecting blockchain-based application design patterns.</p>
-<span class="bib">IEEE Transactions on Software Engineering, 2025, 51(4): 1039–1066.</span>
-</div>
-</div>
-<div class="pub">
-<div class="venue">PACMSE<br/>FSE 2025</div>
-<div>
-<h3>A Knowledge Enhanced Large Language Model for Bug Localization</h3>
-<span class="authors">Li Y, Liu B, Zhang T, Wang Z, Lo D, Yang L, Lyu J, et al.</span>
-<p>This work explores context organization, knowledge injection, and localization effectiveness of knowledge-enhanced LLMs for bug localization.</p>
-<span class="bib">Proceedings of the ACM on Software Engineering, 2025, 2(FSE): 1914–1936.</span>
-</div>
-</div>
-<div class="pub">
-<div class="venue">TOSEM<br/>2024</div>
-<div>
-<h3>One Size Does Not Fit All: Investigating Efficacy of Perplexity in Detecting LLM-Generated Code</h3>
-<span class="authors">Xu J, Zhang H, Yang Y, Yang L, Cheng Z, Lyu J, et al.</span>
-<p>This work analyzes the applicability boundaries of perplexity for detecting LLM-generated code and reveals the limitations of one-size-fits-all detection strategies across different scenarios.</p>
-<span class="bib">ACM Transactions on Software Engineering and Methodology, 2024.</span>
-</div>
-</div>
-<div class="pub">
-<div class="venue">TSE<br/>2026</div>
-<div>
-<h3>Towards Robust Detection for Malicious Injection Variants</h3>
-<span class="authors">Yang Y, Liu B, Zhang H, Xu J, Zhou X, Lyu J, et al.</span>
-<p>This work studies robust software security detection methods and generalization capability for malicious injection variants.</p>
-<span class="bib">IEEE Transactions on Software Engineering, 2026 [to appear].</span>
-</div>
-</div>
-</div>
-</section>
-<section class="section" id="students">
-<div class="section-head">
-<div>
-<div class="kicker">Students &amp; Collaboration</div>
-<h2>Students Interested in Real Software Engineering Problems Are Welcome</h2>
-</div>
-<p class="section-desc">
-          I especially welcome students who have engineering implementation skills, are willing to dive into real toolchains and open-source repositories, and are interested in software security, testing, or AI4SE.
-        </p>
-</div>
-<div class="grid-3">
-<article class="card">
-<h3>Potential Topics</h3>
-<p>Software build, software supply-chain security, program analysis, LLM agents, code intelligence, automated testing, and vulnerability detection.</p>
-</article>
-<article class="card">
-<h3>Expected Skills</h3>
-<p>Ability to read and modify real codebases, familiarity with at least one of Python/Java/C, and willingness to conduct experiments, reproduction studies, and tool development.</p>
-</article>
-<article class="card">
-<h3>Mentoring Style</h3>
-<p>Starting from students’ interests and small concrete problems, we gradually develop reproducible experiments, tool prototypes, paper submissions, or industrial collaboration deliverables, with weekly one-on-one meetings.</p>
-</article>
-</div>
-</section>
+
+
+
 <section class="section" id="contact">
 <div class="contact">
 <div class="section-head" style="margin-bottom: 0;">
 <div>
 <div class="kicker" style="color:#74d7ff;">Contact</div>
 <h2>Open to Collaboration</h2>
-<p class="section-desc">
-              Please feel free to reach out if you are interested in software R&amp;D efficiency, build systems, software security, AI4SE, Agentic Coding, or the deployment of enterprise-level development tools.
-            </p>
+<p class="section-desc">Please feel free to reach out if you are interested in trustworthy autonomous software R&amp;D, build-system performance, CI/CD configuration intelligence, software supply-chain security, or LLM application analysis.</p>
 <div class="tag-row">
 <span class="tag">Email: junlyu@nju.edu.cn</span>
 <span class="tag">Nanjing University</span>
@@ -1419,7 +1448,7 @@
 <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    const cards = document.querySelectorAll(".card, .stat, .hero-card, .focus-item, .topic-panel, .chain-item, .pub");
+    const cards = document.querySelectorAll(".card, .stat, .hero-card, .focus-item, .problem-banner, .agenda-step, .level-item, .current-card, .foundation-strip, .completed-card");
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
